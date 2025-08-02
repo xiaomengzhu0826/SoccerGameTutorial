@@ -1,2 +1,4 @@
-res://Scenes/World/World.tscn
 res://Scenes/Characters/Player.tscn
+res://Scenes/Characters/Player.cs
+res://Scenes/World/World.tscn
+res://Scenes/Utils/KeyUtils.cs
