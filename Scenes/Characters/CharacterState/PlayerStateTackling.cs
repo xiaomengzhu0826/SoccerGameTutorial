@@ -17,7 +17,7 @@ public partial class PlayerStateTackling : PlayerState
     {
         if (Time.GetTicksMsec() - _timeStartTackle > DURATION_TACKLE)
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING);
         }
     }
 

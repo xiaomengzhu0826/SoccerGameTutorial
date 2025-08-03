@@ -23,7 +23,8 @@ public partial class Player : CharacterBody2D
 	public enum State
 	{
 		MOVING,
-		TACKLING
+		TACKLING,
+		RECOVERING
 	}
 
 	public override void _Ready()
@@ -44,6 +45,7 @@ public partial class Player : CharacterBody2D
 	{
 		if (_currentState != null)
 		{
+			_currentState.OnStateTransitionRequest -= SwitchState;
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);

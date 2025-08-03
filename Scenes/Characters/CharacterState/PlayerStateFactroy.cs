@@ -11,7 +11,8 @@ public class PlayerStateFactroy
         _states = new()
         {
             {Player.State.MOVING, () => new PlayerStateMoving() },
-            {Player.State.TACKLING ,() =>new PlayerStateTackling()}
+            {Player.State.TACKLING ,() =>new PlayerStateTackling()},
+            {Player.State.RECOVERING ,() =>new PlayerStateRecovering()}
         };
     }
 
