@@ -3,13 +3,15 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	[Export] private float _speed;
-	[Export] private ControlScheme _controlScheme;
+	[Export] public float _speed;
+	[Export] public ControlScheme _controlScheme;
 
 	private AnimationPlayer _animationPlayer;
 	private Sprite2D _playerSprite;
 
 	private Vector2 _heading = Vector2.Right;
+	private PlayerState _currentState;
+	private PlayerStateFactroy _stateFactory = new();
 
 	public enum ControlScheme
 	{
@@ -18,35 +20,40 @@ public partial class Player : CharacterBody2D
 		P2
 	}
 
+	public enum State
+	{
+		MOVING,
+		TACKLING
+	}
+
 	public override void _Ready()
 	{
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_playerSprite = GetNode<Sprite2D>("PlayerSprite");
+
+		SwitchState(State.MOVING);
 	}
 
 	public override void _Process(double delta)
 	{
-		if (_controlScheme == ControlScheme.CPU)
-		{
-
-		}
-		else
-		{
-			HandleHumanMovement();
-		}
-		SetMovementAnimation();
-		SetHeading();
 		FlipSprites();
 		MoveAndSlide();
 	}
 
-	private void HandleHumanMovement()
+	private void SwitchState(State state)
 	{
-		var direction = KeyUtils.GetInputVector(_controlScheme);
-		Velocity = direction * _speed;
+		if (_currentState != null)
+		{
+			_currentState.QueueFree();
+		}
+		_currentState = _stateFactory.GetFreshState(state);
+		_currentState.Setup(this, _animationPlayer);
+		_currentState.OnStateTransitionRequest += SwitchState;
+		_currentState.Name = "PlayerStateMachine:" + state.ToString();
+		CallDeferred("add_child", _currentState);
 	}
 
-	private void SetMovementAnimation()
+	public void SetMovementAnimation()
 	{
 		if (Velocity.Length() > 0)
 		{
@@ -58,7 +65,7 @@ public partial class Player : CharacterBody2D
 		}
 	}
 
-	private void SetHeading()
+	public void SetHeading()
 	{
 		if (Velocity.X > 0)
 		{
