@@ -1,1 +1,15 @@
 res://Scenes/Ball/Ball.cs
+res://Scenes/Characters/Player.cs
+res://Scenes/Ball/BallStateFactory.cs
+res://Scenes/Utils/KeyUtils.cs
+res://Scenes/Characters/CharacterState/PlayerState.cs
+res://Scenes/Characters/CharacterState/PlayerStateRecovering.cs
+res://Scenes/Ball/BallStates/BallState.cs
+res://Scenes/Ball/BallStates/BallStateFreeform.cs
+res://Scenes/Ball/BallStates/BallStateCarried.cs
+res://Scenes/Characters/CharacterState/PlayerStateMoving.cs
+res://Scenes/Characters/CharacterState/PlayerStateTackling.cs
+res://Scenes/Ball/BallStates/BallStateShot.cs
+res://Scenes/Ball/Ball.tscn
+res://Scenes/World/World.tscn
+res://Scenes/Characters/Player.tscn

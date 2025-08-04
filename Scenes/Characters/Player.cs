@@ -9,7 +9,7 @@ public partial class Player : CharacterBody2D
 	private AnimationPlayer _animationPlayer;
 	private Sprite2D _playerSprite;
 
-	private Vector2 _heading = Vector2.Right;
+	public Vector2 _heading = Vector2.Right;
 	private PlayerState _currentState;
 	private PlayerStateFactroy _stateFactory = new();
 
