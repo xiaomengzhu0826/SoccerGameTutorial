@@ -43,6 +43,6 @@ public partial class BallStateCarried : BallState
         {
             _animationPlayer.Play("idle");
         }
-        _ball.Position = _carrier.Position + new Vector2((vx+_carrier._heading.X * OFFSET_FROM_PLAYER.X), OFFSET_FROM_PLAYER.Y);
+        _ball.Position = _carrier.Position + new Vector2(vx+_carrier._heading.X * OFFSET_FROM_PLAYER.X, OFFSET_FROM_PLAYER.Y);
     }
 }

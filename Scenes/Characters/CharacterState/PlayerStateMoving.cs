@@ -22,9 +22,14 @@ public partial class PlayerStateMoving : PlayerState
         var direction = KeyUtils.GetInputVector(_player._controlScheme);
         _player.Velocity = direction * _player._speed;
 
-        if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        if (_player.HasBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT);
         }
+
+        // if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        // {
+        //     EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING);
+        // }
     }
 }

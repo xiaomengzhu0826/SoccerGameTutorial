@@ -3,8 +3,7 @@ using System;
 
 public partial class Ball : AnimatableBody2D
 {
-	[Export] public float _dribble_frequency;
-	[Export] public float _dribble_intensity;
+
 
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;

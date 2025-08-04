@@ -70,8 +70,6 @@ radius = 4.0
 [node name="Ball" type="AnimatableBody2D"]
 collision_layer = 4
 script = ExtResource("1_dvc57")
-_dribble_frequency = 5.0
-_dribble_intensity = 5.0
 
 [node name="BallSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_rcvud")

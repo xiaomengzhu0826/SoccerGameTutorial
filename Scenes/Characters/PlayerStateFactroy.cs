@@ -12,7 +12,9 @@ public class PlayerStateFactroy
         {
             {Player.State.MOVING, () => new PlayerStateMoving() },
             {Player.State.TACKLING ,() =>new PlayerStateTackling()},
-            {Player.State.RECOVERING ,() =>new PlayerStateRecovering()}
+            {Player.State.RECOVERING ,() =>new PlayerStateRecovering()},
+            {Player.State.PREPPING_SHOT ,() =>new PlayerStatePreppingShot()},
+            {Player.State.SHOOTING ,() =>new PlayerStateShooting()},
         };
     }
 

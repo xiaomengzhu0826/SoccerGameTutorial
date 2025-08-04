@@ -3,8 +3,10 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	[Export] public float _speed;
+	[Export] public float _speed = 80;
+	[Export] public float _power = 70;
 	[Export] public ControlScheme _controlScheme;
+	[Export] public Ball _ball;
 
 	private AnimationPlayer _animationPlayer;
 	private Sprite2D _playerSprite;
@@ -24,7 +26,9 @@ public partial class Player : CharacterBody2D
 	{
 		MOVING,
 		TACKLING,
-		RECOVERING
+		RECOVERING,
+		PREPPING_SHOT,
+		SHOOTING
 	}
 
 	public override void _Ready()
@@ -82,5 +86,10 @@ public partial class Player : CharacterBody2D
 	private void FlipSprites()
 	{
 		_playerSprite.FlipH = _heading == Vector2.Left ? true : false;
+	}
+
+	public bool HasBall()
+	{
+		return _ball._carrier == this;
 	}
 }

@@ -13,3 +13,5 @@ res://Scenes/Ball/BallStates/BallStateShot.cs
 res://Scenes/Ball/Ball.tscn
 res://Scenes/World/World.tscn
 res://Scenes/Characters/Player.tscn
+res://Scenes/Characters/CharacterState/PlayerStateShooting.cs
+res://Scenes/Characters/CharacterState/PlayerStatePreppingShot.cs
