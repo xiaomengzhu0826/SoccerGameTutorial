@@ -36,7 +36,7 @@ public partial class Player : CharacterBody2D
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_playerSprite = GetNode<Sprite2D>("PlayerSprite");
 
-		SwitchState(State.MOVING);
+		SwitchState(State.MOVING,null);
 	}
 
 	public override void _Process(double delta)
@@ -45,7 +45,7 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
 	}
 
-	private void SwitchState(State state)
+	private void SwitchState(State state, PlayerStateData stateData)
 	{
 		if (_currentState != null)
 		{
@@ -53,13 +53,14 @@ public partial class Player : CharacterBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this, _animationPlayer);
+		_currentState.Setup(this,stateData, _animationPlayer,_ball);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
 	}
 
-	public void SetMovementAnimation()
+
+    public void SetMovementAnimation()
 	{
 		if (Velocity.Length() > 0)
 		{
@@ -91,5 +92,13 @@ public partial class Player : CharacterBody2D
 	public bool HasBall()
 	{
 		return _ball._carrier == this;
+	}
+
+	public void OnAnimationCompelete()
+	{
+		if (_currentState != null)
+		{
+			_currentState.OnAnimationCompelete();
+		}
 	}
 }

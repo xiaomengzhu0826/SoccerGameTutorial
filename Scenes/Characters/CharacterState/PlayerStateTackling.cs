@@ -27,7 +27,7 @@ public partial class PlayerStateTackling : PlayerState
         }
         else if (Time.GetTicksMsec() - _timeFinishTackle > DURATION_PRIOR_RECOVERY)
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING,(PlayerStateData)null);
         }
     }
 

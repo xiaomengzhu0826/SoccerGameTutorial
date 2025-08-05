@@ -3,5 +3,27 @@ using System;
 
 public partial class PlayerStateShooting : PlayerState
 {
-    
+    public override void _EnterTree()
+    {
+        _animationPlayer.Play("kick");
+    }
+
+    public override void OnAnimationCompelete()
+    {
+        if (_player._controlScheme == Player.ControlScheme.CPU)
+        {
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING,(PlayerStateData)null);
+        }
+        else
+        {
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING,(PlayerStateData)null);
+        }
+        ShootBall();
+    }
+
+    private void ShootBall()
+    {
+        _ball.Shoot(_playerStateData.ShotDirection * _playerStateData.ShotPower);
+    }
+
 }

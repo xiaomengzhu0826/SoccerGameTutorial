@@ -18,7 +18,7 @@ public partial class PlayerStateRecovering : PlayerState
     {
         if (Time.GetTicksMsec() - _timeStartRecovery > DURATION_RECOVERY)
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING,(PlayerStateData)null);
         }
     }
 
