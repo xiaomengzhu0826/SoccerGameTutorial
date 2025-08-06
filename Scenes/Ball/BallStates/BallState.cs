@@ -5,6 +5,8 @@ public partial class BallState : Node
 {
     [Signal] public delegate void OnStateTransitionRequestEventHandler(Ball.State newState);
 
+    protected readonly float GRAVITY = 10.0f;
+
     protected Ball _ball;
     protected Player _carrier;
     protected Area2D _playerDetectionArea;
@@ -18,5 +20,41 @@ public partial class BallState : Node
         _carrier = contextCarrier;
         _animationPlayer = contextAnimationPlayer;
         _ballSprite = contextBallSprite;
+    }
+
+    public void SetBallAnimationFromVelocity()
+    {
+        if (_ball._velocity == Vector2.Zero)
+        {
+            _animationPlayer.Play("idle");
+        }
+        else if (_ball._velocity.X > 0)
+        {
+            _animationPlayer.Play("roll");
+            _animationPlayer.Advance(0);
+        }
+        else
+        {
+            _animationPlayer.PlayBackwards("roll");
+            _animationPlayer.Advance(0);
+        }
+    }
+
+    public void ProcessGravity(float delta,float bounciness=0.0f)
+    {
+        if (_ball._height > 0 || _ball._heightVelocity>0)
+        {
+            _ball._heightVelocity -= GRAVITY * delta;
+            _ball._height += _ball._heightVelocity;
+            if (_ball._height < 0)
+            {
+                _ball._height = 0;
+                if (bounciness > 0 && _ball._heightVelocity < 0)
+                {
+                    _ball._heightVelocity = -_ball._heightVelocity * bounciness;
+                    _ball._velocity *=  bounciness;
+                }
+            }
+        }
     }
 }

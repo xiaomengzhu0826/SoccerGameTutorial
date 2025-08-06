@@ -3,7 +3,7 @@ using System;
 
 public partial class PlayerState : Node
 {
-    [Signal] public delegate void OnStateTransitionRequestEventHandler(Player.State newState,PlayerStateData? stateData);
+    [Signal] public delegate void OnStateTransitionRequestEventHandler(Player.State newState,PlayerStateData stateData);
 
     protected Player _player;
     protected Ball _ball;

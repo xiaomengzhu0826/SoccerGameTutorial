@@ -4,7 +4,7 @@ using System;
 public partial class BallStateShot : BallState
 {
     private readonly float SHOT_SPRITE_SCALE = 0.8f;
-    private readonly int SHOT_HEIGHT = 5;
+    private readonly int SHOT_HEIGHT = 30;
     private readonly int DURATION_SHOT = 1000;
 
     private float _timeSinceShot=Time.GetTicksMsec();
@@ -12,16 +12,7 @@ public partial class BallStateShot : BallState
 
     public override void _EnterTree()
     {
-        if (_ball._velocity.X >= 0)
-        {
-            _animationPlayer.Play("roll");
-            _animationPlayer.Advance(0);
-        }
-        else
-        {
-            _animationPlayer.PlayBackwards("roll");
-            _animationPlayer.Advance(0);
-        }
+        SetBallAnimationFromVelocity();
         _ballSprite.Scale = new Vector2(1, SHOT_SPRITE_SCALE);
         _ball._height = SHOT_HEIGHT;
         _timeSinceShot = Time.GetTicksMsec();
@@ -40,8 +31,7 @@ public partial class BallStateShot : BallState
         }
         else
         {
-             _ball.MoveAndCollide(_ball._velocity * (float)delta);
-        }
-       
+            _ball.MoveAndCollide(_ball._velocity * (float)delta);
+        } 
     }
 }

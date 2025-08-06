@@ -11,6 +11,7 @@ public partial class Ball : AnimatableBody2D
 	public Player _carrier;
 	public Vector2 _velocity = Vector2.Zero;
 	public float _height;
+	public float _heightVelocity;
 	private BallState _currentState;
 	private BallStateFactory _stateFactory = new();
 
@@ -56,6 +57,6 @@ public partial class Ball : AnimatableBody2D
 	{
 		_velocity = shotVelocity;
 		_carrier = null;
-		SwitchState(Ball.State.SHOT);
+		SwitchState(State.SHOT);
 	}
 }
