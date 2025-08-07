@@ -1,7 +1,7 @@
-res://Scenes/Characters/CharacterState/PlayerStatePassing.cs
 res://Scenes/World/World.tscn
 res://Scenes/Characters/Player.tscn
-res://Scenes/Ball/Ball.tscn
+res://Scenes/World/MainCamera.cs
+res://Scenes/World/MainCamera.tscn
 res://Scenes/Ball/BallStates/BallState.cs
 res://Scenes/Characters/Player.cs
 res://Scenes/Characters/CharacterState/PlayerStateMoving.cs
@@ -15,5 +15,9 @@ res://Scenes/Characters/CharacterState/PlayerStatePreppingShot.cs
 res://Scenes/Characters/CharacterState/PlayerStateShooting.cs
 res://Scenes/Characters/CharacterState/PlayerState.cs
 res://Scenes/Characters/CharacterState/PlayerStateData.cs
+res://Scenes/Characters/CharacterState/PlayerStatePassing.cs
 res://Scenes/Ball/BallStateFactory.cs
 res://Scenes/Utils/KeyUtils.cs
+res://Scenes/Ball/Ball.tscn
+res://Scenes/World/Goal.tscn
+res://Scenes/World/Goal.cs

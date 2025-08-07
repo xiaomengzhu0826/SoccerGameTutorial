@@ -4,7 +4,7 @@ using System;
 public partial class BallStateShot : BallState
 {
     private readonly float SHOT_SPRITE_SCALE = 0.8f;
-    private readonly int SHOT_HEIGHT = 30;
+    private readonly int SHOT_HEIGHT = 5;
     private readonly int DURATION_SHOT = 1000;
 
     private float _timeSinceShot=Time.GetTicksMsec();
@@ -31,7 +31,7 @@ public partial class BallStateShot : BallState
         }
         else
         {
-            _ball.MoveAndCollide(_ball._velocity * (float)delta);
+            MoveAndBounce((float)delta);
         } 
     }
 }

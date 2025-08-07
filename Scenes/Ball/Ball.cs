@@ -7,11 +7,12 @@ public partial class Ball : AnimatableBody2D
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;
 
+	public readonly float BOUNCINESS = 0.8f;
 
 	public readonly float _frictionAir = 35.0f;
-    public readonly float _frictionGround = 250.0f;
+	public readonly float _frictionGround = 250.0f;
 	public Player _carrier;
-	public Vector2 _velocity ;
+	public Vector2 _velocity;
 	public float _height;
 	public float _heightVelocity;
 	private BallState _currentState;
@@ -41,7 +42,7 @@ public partial class Ball : AnimatableBody2D
 	}
 
 
-	private void SwitchState(State state)
+	public void SwitchState(State state)
 	{
 		if (_currentState != null)
 		{
@@ -67,8 +68,13 @@ public partial class Ball : AnimatableBody2D
 		var direction = GlobalPosition.DirectionTo(destination);
 		var distance = GlobalPosition.DistanceTo(destination);
 		var intensity = Mathf.Sqrt(2 * distance * _frictionGround);
-		_velocity = intensity*direction;
+		_velocity = intensity * direction;
 		_carrier = null;
 		SwitchState(State.FREEFORM);
+	}
+
+	public void Stop()
+	{
+		_velocity = Vector2.Zero;
 	}
 }

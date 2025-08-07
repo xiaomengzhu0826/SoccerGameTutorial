@@ -5,6 +5,7 @@ public partial class BallState : Node
 {
     [Signal] public delegate void OnStateTransitionRequestEventHandler(Ball.State newState);
 
+    
     protected readonly float GRAVITY = 10.0f;
 
     protected Ball _ball;
@@ -40,9 +41,9 @@ public partial class BallState : Node
         }
     }
 
-    public void ProcessGravity(float delta,float bounciness=0.0f)
+    public void ProcessGravity(float delta, float bounciness = 0.0f)
     {
-        if (_ball._height > 0 || _ball._heightVelocity>0)
+        if (_ball._height > 0 || _ball._heightVelocity > 0)
         {
             _ball._heightVelocity -= GRAVITY * delta;
             _ball._height += _ball._heightVelocity;
@@ -52,9 +53,19 @@ public partial class BallState : Node
                 if (bounciness > 0 && _ball._heightVelocity < 0)
                 {
                     _ball._heightVelocity = -_ball._heightVelocity * bounciness;
-                    _ball._velocity *=  bounciness;
+                    _ball._velocity *= bounciness;
                 }
             }
+        }
+    }
+
+    public void MoveAndBounce(float delta)
+    {
+        var collision = _ball.MoveAndCollide(_ball._velocity * delta);
+        if (collision != null)
+        {
+            _ball._velocity = _ball._velocity.Bounce(collision.GetNormal()) * _ball.BOUNCINESS;
+            _ball.SwitchState(Ball.State.FREEFORM);
         }
     }
 }

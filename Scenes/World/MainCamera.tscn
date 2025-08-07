@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmpat8j6mpjqm"]
+
+[ext_resource type="Script" uid="uid://ccl0vybi02fod" path="res://Scenes/World/MainCamera.cs" id="1_h2w23"]
+
+[node name="MainCamera" type="Camera2D"]
+limit_left = 0
+limit_top = 0
+limit_right = 850
+limit_bottom = 360
+position_smoothing_enabled = true
+script = ExtResource("1_h2w23")
