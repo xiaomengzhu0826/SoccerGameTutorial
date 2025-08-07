@@ -5,8 +5,7 @@ using System.Diagnostics;
 public partial class BallStateFreeform : BallState
 {
     private readonly float BOUNCINESS = 0.8f;
-    private readonly float FRICTION_AIR = 35.0f;
-    private readonly float FREICTION_GROUND = 250.0f;
+
 
     public override void _EnterTree()
     {
@@ -21,7 +20,7 @@ public partial class BallStateFreeform : BallState
     public override void _Process(double delta)
     {
         SetBallAnimationFromVelocity();
-        float friction = _ball._height > 0 ? FRICTION_AIR : FREICTION_GROUND;
+        float friction = _ball._height > 0 ? _ball._frictionAir : _ball._frictionGround;
         _ball._velocity = _ball._velocity.MoveToward(Vector2.Zero, friction * (float)delta);
         ProcessGravity((float)delta,BOUNCINESS);
         _ball.MoveAndCollide(_ball._velocity * (float)delta);

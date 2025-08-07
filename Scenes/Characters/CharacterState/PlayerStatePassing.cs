@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 
 public partial class PlayerStatePassing : PlayerState
 {
@@ -14,6 +14,9 @@ public partial class PlayerStatePassing : PlayerState
     public override void OnAnimationCompelete()
     {
         Player passTarget = FindTeammateInView();
+        GD.Print(passTarget);
+        var target =new Vector2(100, 100);
+        _ball.PassTo(target);
         EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING, (PlayerStateData)null);
     }
 
@@ -32,12 +35,10 @@ public partial class PlayerStatePassing : PlayerState
         
         if (teammatesInView.Count > 0)
         {
-            //GD.Print(teammatesInView[0]);
             return (Player)teammatesInView[0];
         }
         else
         {
-            //GD.Print("null");
             return null;
         }
         
