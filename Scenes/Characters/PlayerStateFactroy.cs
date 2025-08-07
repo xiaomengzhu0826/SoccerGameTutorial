@@ -15,6 +15,7 @@ public class PlayerStateFactroy
             {Player.State.RECOVERING ,() =>new PlayerStateRecovering()},
             {Player.State.PREPPING_SHOT ,() =>new PlayerStatePreppingShot()},
             {Player.State.SHOOTING ,() =>new PlayerStateShooting()},
+            {Player.State.PASSING ,() =>new PlayerStatePassing()},
         };
     }
 

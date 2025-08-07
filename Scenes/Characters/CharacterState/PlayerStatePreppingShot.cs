@@ -14,6 +14,7 @@ public partial class PlayerStatePreppingShot : PlayerState
         _animationPlayer.Play("prep_kick");
         _player.Velocity = Vector2.Zero;
         _timeStartShot = Time.GetTicksMsec();
+        _shot_direction = _player._heading;
     }
 
     public override void _Process(double delta)

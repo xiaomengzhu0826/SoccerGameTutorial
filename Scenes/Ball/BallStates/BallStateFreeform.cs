@@ -15,7 +15,7 @@ public partial class BallStateFreeform : BallState
 
     public override void _ExitTree()
     {
-         _playerDetectionArea.BodyEntered -= OnPlayerEnter;
+        _playerDetectionArea.BodyEntered -= OnPlayerEnter;
     }
 
     public override void _Process(double delta)

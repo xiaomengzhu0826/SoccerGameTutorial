@@ -10,6 +10,7 @@ public partial class Player : CharacterBody2D
 
 	private AnimationPlayer _animationPlayer;
 	private Sprite2D _playerSprite;
+	private Area2D _teammateDetectionArea;
 
 	public Vector2 _heading = Vector2.Right;
 	private PlayerState _currentState;
@@ -28,13 +29,15 @@ public partial class Player : CharacterBody2D
 		TACKLING,
 		RECOVERING,
 		PREPPING_SHOT,
-		SHOOTING
+		SHOOTING,
+		PASSING
 	}
 
 	public override void _Ready()
 	{
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_playerSprite = GetNode<Sprite2D>("PlayerSprite");
+		_teammateDetectionArea = GetNode<Area2D>("TeammateDetection");
 
 		SwitchState(State.MOVING,null);
 	}
@@ -53,7 +56,7 @@ public partial class Player : CharacterBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this,stateData, _animationPlayer,_ball);
+		_currentState.Setup(this,stateData, _animationPlayer,_ball,_teammateDetectionArea);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);

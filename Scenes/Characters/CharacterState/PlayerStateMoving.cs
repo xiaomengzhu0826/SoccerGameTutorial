@@ -21,10 +21,18 @@ public partial class PlayerStateMoving : PlayerState
     {
         var direction = KeyUtils.GetInputVector(_player._controlScheme);
         _player.Velocity = direction * _player._speed;
+        if (_player.Velocity != Vector2.Zero)
+        {
+            _teammateDetectionArea.Rotation = _player.Velocity.Angle();
+        }
 
+        if (_player.HasBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
+        {
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PASSING, (PlayerStateData)null);
+        }
         if (_player.HasBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT,(PlayerStateData)null);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
         }
 
         // if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))

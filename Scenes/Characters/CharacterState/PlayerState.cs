@@ -9,13 +9,15 @@ public partial class PlayerState : Node
     protected Ball _ball;
     protected AnimationPlayer _animationPlayer;
     protected PlayerStateData _playerStateData;
+    protected Area2D _teammateDetectionArea;
 
-    public void Setup(Player contextPlayer, PlayerStateData contextPlayerStateData, AnimationPlayer contextAnimationPlayer, Ball contextBall)
+    public void Setup(Player contextPlayer, PlayerStateData contextPlayerStateData, AnimationPlayer contextAnimationPlayer, Ball contextBall, Area2D contextTeammateDetectionArea)
     {
         _player = contextPlayer;
         _animationPlayer = contextAnimationPlayer;
         _playerStateData = contextPlayerStateData;
         _ball = contextBall;
+        _teammateDetectionArea = contextTeammateDetectionArea;
     }
 
     // public void TransitionState(Player.State newState,PlayerStateData stateData)
