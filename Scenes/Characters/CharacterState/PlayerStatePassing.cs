@@ -14,9 +14,14 @@ public partial class PlayerStatePassing : PlayerState
     public override void OnAnimationCompelete()
     {
         Player passTarget = FindTeammateInView();
-        GD.Print(passTarget);
-        var target =new Vector2(100, 100);
-        _ball.PassTo(target);
+        if (passTarget == null)
+        {
+            _ball.PassTo(_ball.Position + _player._heading * _player._speed);
+        }
+        else
+        {
+            _ball.PassTo(passTarget.Position + passTarget.Velocity);
+        }
         EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING, (PlayerStateData)null);
     }
 
