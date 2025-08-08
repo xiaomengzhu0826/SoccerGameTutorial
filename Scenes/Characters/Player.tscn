@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b38de5hn2dvqq"]
+[gd_scene load_steps=18 format=3 uid="uid://b38de5hn2dvqq"]
 
 [ext_resource type="Script" uid="uid://corjyn4ss2s78" path="res://Scenes/Characters/Player.cs" id="1_0el0d"]
 [ext_resource type="Texture2D" uid="uid://c6wwxfm2pfiaf" path="res://Assets/art/characters/soccer-player.png" id="1_gjot8"]
@@ -18,6 +18,54 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_w38he"]
+resource_name = "bicycle_kick"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [36, 37, 38, 39]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"OnAnimationCompelete"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_w6cdd"]
+resource_name = "header"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [24, 25]
 }
 
 [sub_resource type="Animation" id="Animation_0el0d"]
@@ -141,20 +189,58 @@ tracks/0/keys = {
 "values": [30]
 }
 
+[sub_resource type="Animation" id="Animation_meglp"]
+resource_name = "volley_kick"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [49, 50]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"OnAnimationCompelete"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7pt4t"]
 _data = {
 &"RESET": SubResource("Animation_o5en2"),
+&"bicycle_kick": SubResource("Animation_w38he"),
+&"header": SubResource("Animation_w6cdd"),
 &"idle": SubResource("Animation_0el0d"),
 &"kick": SubResource("Animation_qkgjm"),
 &"prep_kick": SubResource("Animation_gc10f"),
 &"recover": SubResource("Animation_7qdam"),
 &"run": SubResource("Animation_gjot8"),
-&"tackle": SubResource("Animation_7pt4t")
+&"tackle": SubResource("Animation_7pt4t"),
+&"volley_kick": SubResource("Animation_meglp")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7qdam"]
 radius = 4.0
 height = 18.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7pt4t"]
+radius = 6.0
+height = 20.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -199,3 +285,13 @@ polygon = PackedVector2Array(0, -40, 280, -150, 330, -100, 330, 100, 280, 150, 0
 texture = ExtResource("4_7qdam")
 centered = false
 offset = Vector2(-8, -15)
+
+[node name="BallDetectionArea" type="Area2D" parent="."]
+position = Vector2(0, -8)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallDetectionArea"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_7pt4t")

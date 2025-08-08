@@ -26,18 +26,46 @@ public partial class PlayerStateMoving : PlayerState
             _teammateDetectionArea.Rotation = _player.Velocity.Angle();
         }
 
-        if (_player.HasBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
+        if (_player.HasBall())
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PASSING, (PlayerStateData)null);
+            if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
+            {
+                EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PASSING, (PlayerStateData)null);
+            }
+            else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+            {
+                EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
+            }
         }
-        if (_player.HasBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        else if (_ball.CanAirInteract() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
+            if (_player.Velocity == Vector2.Zero)
+            {
+                if (IsFacingTargetGoal())
+                {
+                    EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.VOLLEY_KICK, (PlayerStateData)null);
+                }
+                else
+                {
+                    EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.BICYCLE_KICK, (PlayerStateData)null);
+                }
+            }
+            else
+            {
+                EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.HEADER, (PlayerStateData)null);
+            }
         }
+
 
         // if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         // {
         //     EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING);
         // }
+    }
+
+    private bool IsFacingTargetGoal()
+    {
+        var directionToTargetGoal = _player.Position.DirectionTo(_targetGoal.Position);
+        return _player._heading.Dot(directionToTargetGoal) > 0;
     }
 }

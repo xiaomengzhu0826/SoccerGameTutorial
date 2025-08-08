@@ -16,6 +16,9 @@ public class PlayerStateFactroy
             {Player.State.PREPPING_SHOT ,() =>new PlayerStatePreppingShot()},
             {Player.State.SHOOTING ,() =>new PlayerStateShooting()},
             {Player.State.PASSING ,() =>new PlayerStatePassing()},
+            {Player.State.HEADER ,() =>new PlayerStateHeader()},
+            {Player.State.BICYCLE_KICK ,() =>new PlayerStateBicycleKick()},
+            {Player.State.VOLLEY_KICK ,() =>new PlayerStateVolleyKick()},
         };
     }
 

@@ -4,8 +4,8 @@ using System;
 public partial class MainCamera : Camera2D
 {
 	private readonly float DISTANCE_TARGET = 100.0f;
-	private readonly int SMOOTHING_BALL_CARRIED = 2;
-	private readonly int SMOOTHING_BALL_DEFAULT = 8;
+	private readonly int SMOOTHING_BALL_CARRIED = 1;
+	private readonly int SMOOTHING_BALL_DEFAULT = 6;
 
 	[Export] private Ball _ball;
 

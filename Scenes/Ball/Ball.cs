@@ -7,10 +7,11 @@ public partial class Ball : AnimatableBody2D
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;
 
-	public readonly float BOUNCINESS = 0.8f;
+	public static readonly float BOUNCINESS = 0.8f;
+	public static readonly float DISTANCE_HIGH_PASS = 130.0f;
+	public static readonly float FRICTIONAIR = 35.0f;
+	public static readonly float FRICTIONGROUND = 250.0f;
 
-	public readonly float _frictionAir = 35.0f;
-	public readonly float _frictionGround = 250.0f;
 	public Player _carrier;
 	public Vector2 _velocity;
 	public float _height;
@@ -67,8 +68,13 @@ public partial class Ball : AnimatableBody2D
 	{
 		var direction = GlobalPosition.DirectionTo(destination);
 		var distance = GlobalPosition.DistanceTo(destination);
-		var intensity = Mathf.Sqrt(2 * distance * _frictionGround);
+		var intensity = Mathf.Sqrt(2 * distance * FRICTIONGROUND);
 		_velocity = intensity * direction;
+		if (distance > DISTANCE_HIGH_PASS)
+		{
+			_heightVelocity = BallState.GRAVITY * distance / (1.8f * intensity);
+		}
+
 		_carrier = null;
 		SwitchState(State.FREEFORM);
 	}
@@ -76,5 +82,20 @@ public partial class Ball : AnimatableBody2D
 	public void Stop()
 	{
 		_velocity = Vector2.Zero;
+	}
+
+	public bool IsFreeform()
+	{
+		return _currentState != null && _currentState is BallStateFreeform;
+	}
+
+	public bool CanAirInteract()
+	{
+		return _currentState != null && _currentState.CanAirInteract();
+	}
+
+	public bool CanAirConnect(float airConnectMinHeight,float airConnectMaxHeight)
+	{
+		return _height >= airConnectMinHeight && _height <= airConnectMaxHeight;
 	}
 }

@@ -12,7 +12,7 @@ public partial class BallStateFactory : Node
         {
             {Ball.State.CARRIED, () => new BallStateCarried() },
             {Ball.State.FREEFORM ,() =>new BallStateFreeform()},
-            {Ball.State.SHOT ,() =>new BallStateShot()}
+            {Ball.State.SHOT ,() =>new BallStateShot()},
         };
     }
 

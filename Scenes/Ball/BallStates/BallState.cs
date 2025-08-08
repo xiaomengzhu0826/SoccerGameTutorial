@@ -5,8 +5,8 @@ public partial class BallState : Node
 {
     [Signal] public delegate void OnStateTransitionRequestEventHandler(Ball.State newState);
 
-    
-    protected readonly float GRAVITY = 10.0f;
+
+    public static readonly float GRAVITY = 10.0f;
 
     protected Ball _ball;
     protected Player _carrier;
@@ -64,8 +64,13 @@ public partial class BallState : Node
         var collision = _ball.MoveAndCollide(_ball._velocity * delta);
         if (collision != null)
         {
-            _ball._velocity = _ball._velocity.Bounce(collision.GetNormal()) * _ball.BOUNCINESS;
+            _ball._velocity = _ball._velocity.Bounce(collision.GetNormal()) * Ball.BOUNCINESS;
             _ball.SwitchState(Ball.State.FREEFORM);
         }
+    }
+
+    public virtual bool CanAirInteract()
+    {
+        return false;
     }
 }

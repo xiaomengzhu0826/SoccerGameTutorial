@@ -18,9 +18,9 @@ public partial class BallStateFreeform : BallState
     public override void _Process(double delta)
     {
         SetBallAnimationFromVelocity();
-        float friction = _ball._height > 0 ? _ball._frictionAir : _ball._frictionGround;
+        float friction = _ball._height > 0 ? Ball.FRICTIONAIR : Ball.FRICTIONGROUND;
         _ball._velocity = _ball._velocity.MoveToward(Vector2.Zero, friction * (float)delta);
-        ProcessGravity((float)delta,_ball.BOUNCINESS);
+        ProcessGravity((float)delta, Ball.BOUNCINESS);
         MoveAndBounce((float)delta);
     }
 
@@ -31,6 +31,9 @@ public partial class BallStateFreeform : BallState
         EmitSignal(BallState.SignalName.OnStateTransitionRequest, (int)Ball.State.CARRIED);
     }
 
-
+    public override bool CanAirInteract()
+    {
+        return true;
+    }
 
 }
