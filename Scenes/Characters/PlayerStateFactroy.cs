@@ -19,6 +19,7 @@ public class PlayerStateFactroy
             {Player.State.HEADER ,() =>new PlayerStateHeader()},
             {Player.State.BICYCLE_KICK ,() =>new PlayerStateBicycleKick()},
             {Player.State.VOLLEY_KICK ,() =>new PlayerStateVolleyKick()},
+            {Player.State.CHEST_CONTROL ,() =>new PlayerStateChestControl()},
         };
     }
 

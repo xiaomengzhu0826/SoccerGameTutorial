@@ -28,6 +28,7 @@ public partial class BallStateFreeform : BallState
     {
         Player player = (Player)body;
         _ball._carrier = player;
+        player.ControlBall();
         EmitSignal(BallState.SignalName.OnStateTransitionRequest, (int)Ball.State.CARRIED);
     }
 

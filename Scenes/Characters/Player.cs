@@ -13,6 +13,8 @@ public partial class Player : CharacterBody2D
 
 	private static readonly float GRAVITY = 8.0f;
 
+	private readonly float BALL_CONTROL_HEIGHT_MAX = 10.0f;
+
 	private AnimationPlayer _animationPlayer;
 	private Sprite2D _playerSprite;
 	private Sprite2D _controlSprite;
@@ -49,7 +51,8 @@ public partial class Player : CharacterBody2D
 		PASSING,
 		HEADER,
 		VOLLEY_KICK,
-		BICYCLE_KICK
+		BICYCLE_KICK,
+		CHEST_CONTROL
 	}
 
 	public override void _Ready()
@@ -61,7 +64,7 @@ public partial class Player : CharacterBody2D
 		_ballDetectionArea = GetNode<Area2D>("BallDetectionArea");
 		SetControlTexture();
 
-		SwitchState(State.MOVING,null);
+		SwitchState(State.MOVING, null);
 	}
 
 	public override void _Process(double delta)
@@ -72,7 +75,7 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
 	}
 
-    private void SwitchState(State state, PlayerStateData stateData)
+	private void SwitchState(State state, PlayerStateData stateData)
 	{
 		if (_currentState != null)
 		{
@@ -80,16 +83,16 @@ public partial class Player : CharacterBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this,stateData, _animationPlayer,_ball,
-							_teammateDetectionArea,_ballDetectionArea,
-							_ownGoal,_targetGoal);
+		_currentState.Setup(this, stateData, _animationPlayer, _ball,
+							_teammateDetectionArea, _ballDetectionArea,
+							_ownGoal, _targetGoal);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
 	}
 
 
-    public void SetMovementAnimation()
+	public void SetMovementAnimation()
 	{
 		if (Velocity.Length() > 0)
 		{
@@ -113,7 +116,7 @@ public partial class Player : CharacterBody2D
 			}
 		}
 		_playerSprite.Position = Vector2.Up * _height;
-    }
+	}
 
 	public void SetHeading()
 	{
@@ -152,6 +155,14 @@ public partial class Player : CharacterBody2D
 		if (_currentState != null)
 		{
 			_currentState.OnAnimationCompelete();
+		}
+	}
+
+	public void ControlBall()
+	{
+		if (_ball._height > BALL_CONTROL_HEIGHT_MAX)
+		{
+			SwitchState(State.CHEST_CONTROL,null);
 		}
 	}
 }

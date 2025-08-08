@@ -23,3 +23,4 @@ res://Scenes/Characters/CharacterState/PlayerStateTackling.cs
 res://Scenes/Ball/BallStates/BallState.cs
 res://Scenes/Characters/CharacterState/PlayerStateMoving.cs
 res://Scenes/Ball/BallStateFactory.cs
+res://Scenes/Characters/CharacterState/PlayerStateChestControl.cs
