@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
-	[Export] public float _speed = 80;
-	[Export] public float _power = 70;
+
 	[Export] public ControlScheme _controlScheme;
 	[Export] public Ball _ball;
 	[Export] private Goal _ownGoal;
@@ -21,11 +20,16 @@ public partial class Player : CharacterBody2D
 	private Area2D _teammateDetectionArea;
 	private Area2D _ballDetectionArea;
 
+	public float _speed = 80;
+	public float _power = 70;
 	public Vector2 _heading = Vector2.Right;
 	private PlayerState _currentState;
 	public float _height;
 	public float _heightVelocity;
-	private PlayerStateFactroy _stateFactory = new();
+	private readonly PlayerStateFactroy _stateFactory = new();
+	private string _fullName;
+	private SkinColor _skinColor;
+	private Role _role;
 
 	public readonly Dictionary<ControlScheme, Texture2D> CONTROL_SCHEME_MAP = new()
 	{
@@ -41,6 +45,21 @@ public partial class Player : CharacterBody2D
 		P2
 	}
 
+	public enum Role
+	{
+		GOALIE,
+		DEFENSE,
+		MIDFIELD,
+		OFFENSE
+	}
+
+	public enum SkinColor
+	{
+		LIGHT,
+		MEDIUM,
+		DARK
+	}
+
 	public enum State
 	{
 		MOVING,
@@ -53,6 +72,20 @@ public partial class Player : CharacterBody2D
 		VOLLEY_KICK,
 		BICYCLE_KICK,
 		CHEST_CONTROL
+	}
+
+	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData)
+	{
+		Position = contextPosition;
+		_ball = contextBall;
+		_ownGoal = contextOwnGoal;
+		_targetGoal = contextTargetGoal;
+		_speed = contextPlayerData.Speed;
+		_power = contextPlayerData.Power;
+		_fullName = contextPlayerData.FullName;
+		_role = contextPlayerData.Role;
+		_skinColor = contextPlayerData.SkinColor;
+		_heading = (_targetGoal.Position.X < Position.X) ? Vector2.Left : Vector2.Right;
 	}
 
 	public override void _Ready()

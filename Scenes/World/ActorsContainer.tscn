@@ -1,0 +1,107 @@
+[gd_scene load_steps=9 format=3 uid="uid://bx81r7gww6n4g"]
+
+[ext_resource type="PackedScene" uid="uid://ce7e3jnwvtywo" path="res://Scenes/World/Goal.tscn" id="1_2rtxt"]
+[ext_resource type="Script" uid="uid://n7y57myresdv" path="res://Scenes/World/ActorsContainer.cs" id="1_osqph"]
+[ext_resource type="PackedScene" uid="uid://dmpat8j6mpjqm" path="res://Scenes/World/MainCamera.tscn" id="2_8a2xr"]
+[ext_resource type="Texture2D" uid="uid://beba8abay5mvj" path="res://Assets/art/backgrounds/top-wall.png" id="2_osqph"]
+[ext_resource type="Texture2D" uid="uid://bg4m8wlmfa8j3" path="res://Assets/art/backgrounds/bottom-wall.png" id="3_8a2xr"]
+[ext_resource type="Texture2D" uid="uid://bannrjw57k54" path="res://Assets/art/backgrounds/side-wall.png" id="4_0mwi7"]
+[ext_resource type="PackedScene" uid="uid://d068glosk4wja" path="res://Scenes/Ball/Ball.tscn" id="6_inmj6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7pgw"]
+size = Vector2(801, 7)
+
+[node name="ActorsContainer" type="Node2D" node_paths=PackedStringArray("_ball", "_goalHome", "_goalAway")]
+y_sort_enabled = true
+script = ExtResource("1_osqph")
+_ball = NodePath("Ball")
+_goalHome = NodePath("PitchObjects/GoalHome")
+_goalAway = NodePath("PitchObjects/GoalAway")
+_teamHome = "FRANCE"
+_teamAway = "GERMANY"
+
+[node name="MainCamera" parent="." node_paths=PackedStringArray("_ball") instance=ExtResource("2_8a2xr")]
+_ball = NodePath("../Ball")
+
+[node name="Spawns" type="Node2D" parent="."]
+position = Vector2(425, 180)
+
+[node name="GoaliePosition" type="Node2D" parent="Spawns"]
+position = Vector2(-345, 1)
+
+[node name="DefensePosition" type="Node2D" parent="Spawns"]
+position = Vector2(-235, -30)
+
+[node name="DefensePosition2" type="Node2D" parent="Spawns"]
+position = Vector2(-235, 30)
+
+[node name="MidfieldPosition" type="Node2D" parent="Spawns"]
+position = Vector2(-125, 0)
+
+[node name="OffensePosition" type="Node2D" parent="Spawns"]
+position = Vector2(-25, -80)
+
+[node name="OffensePosition2" type="Node2D" parent="Spawns"]
+position = Vector2(-25, 80)
+
+[node name="PitchObjects" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="GoalHome" parent="PitchObjects" instance=ExtResource("1_2rtxt")]
+position = Vector2(32, 220)
+
+[node name="GoalAway" parent="PitchObjects" instance=ExtResource("1_2rtxt")]
+position = Vector2(818, 220)
+scale = Vector2(-1, 1)
+
+[node name="TopWall" type="Sprite2D" parent="PitchObjects"]
+position = Vector2(49, 32)
+texture = ExtResource("2_osqph")
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PitchObjects/TopWall"]
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PitchObjects/TopWall/StaticBody2D"]
+polygon = PackedVector2Array(0, 116, 13, 0, 739, 0, 752, 116, 739, 116, 727, 12, 26, 12, 13, 116)
+
+[node name="BottomWall" type="Sprite2D" parent="PitchObjects"]
+position = Vector2(24, 347)
+texture = ExtResource("3_8a2xr")
+centered = false
+offset = Vector2(0, -12)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PitchObjects/BottomWall"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitchObjects/BottomWall/StaticBody2D"]
+position = Vector2(400.5, -2.5)
+shape = SubResource("RectangleShape2D_p7pgw")
+
+[node name="LeftWall" type="Sprite2D" parent="PitchObjects"]
+position = Vector2(24, 221)
+texture = ExtResource("4_0mwi7")
+centered = false
+offset = Vector2(0, -14)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PitchObjects/LeftWall"]
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PitchObjects/LeftWall/StaticBody2D"]
+polygon = PackedVector2Array(14, -1, 29, -1, 16, 114, 1, 114)
+
+[node name="RightWall" type="Sprite2D" parent="PitchObjects"]
+position = Vector2(826, 221)
+scale = Vector2(-1, 1)
+texture = ExtResource("4_0mwi7")
+centered = false
+offset = Vector2(0, -14)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PitchObjects/RightWall"]
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PitchObjects/RightWall/StaticBody2D"]
+polygon = PackedVector2Array(14, -1, 29, -1, 16, 114, 1, 114)
+
+[node name="Ball" parent="." instance=ExtResource("6_inmj6")]
+position = Vector2(157, 140)

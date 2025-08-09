@@ -16,3 +16,4 @@ D:\Godot\GodotTutorials\SoccerGameTutorial\.godot\mono\temp\obj\Debug\refint\Soc
 D:\Godot\GodotTutorials\SoccerGameTutorial\.godot\mono\temp\obj\Debug\SoccerTutorial.pdb
 D:\Godot\GodotTutorials\SoccerGameTutorial\.godot\mono\temp\obj\Debug\SoccerTutorial.genruntimeconfig.cache
 D:\Godot\GodotTutorials\SoccerGameTutorial\.godot\mono\temp\obj\Debug\ref\SoccerTutorial.dll
+D:\Godot\GodotTutorials\SoccerGameTutorial\.godot\mono\temp\bin\Debug\Newtonsoft.Json.dll
