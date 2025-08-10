@@ -8,7 +8,7 @@ public class PlayerResource
     [JsonProperty("name")]
     [Export] public string FullName { get; set; }
 
-    [Export] public Player.SkinColor SkinColor { get; set; }
+    [Export] public Player.SkinColor Skin { get; set; }
     [Export] public Player.Role Role { get; set; }
     [Export] public float Speed { get; set; }
     [Export] public float Power { get; set; }

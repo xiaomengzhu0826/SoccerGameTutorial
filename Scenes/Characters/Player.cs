@@ -30,6 +30,7 @@ public partial class Player : CharacterBody2D
 	private string _fullName;
 	private SkinColor _skinColor;
 	private Role _role;
+	private string _country;
 
 	public readonly Dictionary<ControlScheme, Texture2D> CONTROL_SCHEME_MAP = new()
 	{
@@ -37,6 +38,19 @@ public partial class Player : CharacterBody2D
 		{ControlScheme.P1,GD.Load<Texture2D>("res://Assets/art/props/1p.png")},
 		{ControlScheme.P2,GD.Load<Texture2D>("res://Assets/art/props/2p.png")},
 	};
+
+	public enum Country
+	{
+		DEFAULT, 
+		FRANCE,
+		ARGENTINA,
+		BRAZIL,
+		ENGLAND,
+		GERMANY,
+		ITALY,
+		SPAIN,
+		USA
+	}
 
 	public enum ControlScheme
 	{
@@ -74,7 +88,7 @@ public partial class Player : CharacterBody2D
 		CHEST_CONTROL
 	}
 
-	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData)
+	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
 	{
 		Position = contextPosition;
 		_ball = contextBall;
@@ -84,8 +98,9 @@ public partial class Player : CharacterBody2D
 		_power = contextPlayerData.Power;
 		_fullName = contextPlayerData.FullName;
 		_role = contextPlayerData.Role;
-		_skinColor = contextPlayerData.SkinColor;
+		_skinColor = contextPlayerData.Skin;
 		_heading = (_targetGoal.Position.X < Position.X) ? Vector2.Left : Vector2.Right;
+		_country = contextCountry;
 	}
 
 	public override void _Ready()
@@ -98,6 +113,7 @@ public partial class Player : CharacterBody2D
 		SetControlTexture();
 
 		SwitchState(State.MOVING, null);
+		SetShaderProperties();
 	}
 
 	public override void _Process(double delta)
@@ -107,6 +123,25 @@ public partial class Player : CharacterBody2D
 		ProcessGravity((float)delta);
 		MoveAndSlide();
 	}
+
+	private void SetShaderProperties()
+	{
+		var playerShader = _playerSprite.Material as ShaderMaterial;
+		playerShader.SetShaderParameter("skin_color", (int)_skinColor);
+		var countryColor = FindIndexFromName(_country);
+		playerShader.SetShaderParameter("team_color", countryColor);
+
+	}
+
+	private int FindIndexFromName(string name)
+	{
+		if (Enum.TryParse(_country, true, out Country result))
+		{
+			return (int)result; // 枚举值本质就是索引
+		}
+		return 1; // 找不到
+	}
+
 
 	private void SwitchState(State state, PlayerStateData stateData)
 	{

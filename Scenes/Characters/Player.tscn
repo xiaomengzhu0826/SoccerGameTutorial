@@ -1,9 +1,20 @@
-[gd_scene load_steps=19 format=3 uid="uid://b38de5hn2dvqq"]
+[gd_scene load_steps=23 format=3 uid="uid://b38de5hn2dvqq"]
 
 [ext_resource type="Script" uid="uid://corjyn4ss2s78" path="res://Scenes/Characters/Player.cs" id="1_0el0d"]
 [ext_resource type="Texture2D" uid="uid://c6wwxfm2pfiaf" path="res://Assets/art/characters/soccer-player.png" id="1_gjot8"]
+[ext_resource type="Shader" uid="uid://d3lj7lpqefnon" path="res://Shader/replace_color.gdshader" id="2_7qdam"]
 [ext_resource type="Texture2D" uid="uid://jsqv7j514d3g" path="res://Assets/art/props/1p.png" id="3_7pt4t"]
+[ext_resource type="Texture2D" uid="uid://rh863t7b53cr" path="res://Assets/art/palettes/teams-color-palette.png" id="3_gc10f"]
+[ext_resource type="Texture2D" uid="uid://cqh6sd2w0u4jr" path="res://Assets/art/palettes/skin-colors-palette.png" id="3_qkgjm"]
 [ext_resource type="Texture2D" uid="uid://bpsnv0eaoi6lt" path="res://Assets/art/characters/player-shadow.png" id="4_7qdam"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gc10f"]
+resource_local_to_scene = true
+shader = ExtResource("2_7qdam")
+shader_parameter/skin_palette = ExtResource("3_qkgjm")
+shader_parameter/team_palette = ExtResource("3_gc10f")
+shader_parameter/skin_color = 0
+shader_parameter/team_color = 1
 
 [sub_resource type="Animation" id="Animation_o5en2"]
 length = 0.001
@@ -265,6 +276,7 @@ collision_layer = 2
 script = ExtResource("1_0el0d")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_gc10f")
 texture = ExtResource("1_gjot8")
 centered = false
 offset = Vector2(-16, -32)

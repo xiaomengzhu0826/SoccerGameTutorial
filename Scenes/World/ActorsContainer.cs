@@ -39,15 +39,15 @@ public partial class ActorsContainer : Node2D
 			Node2D child = (Node2D)_spawns.GetChild(i);
 			var playerPosition = child.GlobalPosition;
 			PlayerResource playerData = players[i];
-			var player = SpawnPlayer(playerPosition, _ball, ownGoal, targetGoal, playerData);
+			var player = SpawnPlayer(playerPosition, _ball, ownGoal, targetGoal, playerData,country);
 			AddChild(player);
 		}
 	}
 
-	private Player SpawnPlayer(Vector2 playerPosition, Ball ball, Goal ownGoal, Goal targetGoal, PlayerResource playerData)
+	private Player SpawnPlayer(Vector2 playerPosition, Ball ball, Goal ownGoal, Goal targetGoal, PlayerResource playerData,string country)
 	{
 		Player player = (Player)PLAYER_PREFAB.Instantiate();
-		player.Init(playerPosition, ball, ownGoal, targetGoal, playerData);
+		player.Init(playerPosition, ball, ownGoal, targetGoal, playerData,country);
 		return player;
 	}
 
