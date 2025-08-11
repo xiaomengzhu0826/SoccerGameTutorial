@@ -29,12 +29,10 @@ vec4 get_palette_color(vec4 color,sampler2D palette,int selection)
 	return color;
 }
 
-void fragment() 
+void fragment()
 {
 	COLOR = get_palette_color(COLOR,team_palette,team_color);
 	if(skin_color >0){
 		COLOR = get_palette_color(COLOR,skin_palette,skin_color);
 	}
 }
-
-

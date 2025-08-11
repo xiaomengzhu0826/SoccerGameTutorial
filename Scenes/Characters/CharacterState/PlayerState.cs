@@ -13,6 +13,7 @@ public partial class PlayerState : Node
     protected Area2D _ballDetectionArea;
     protected Goal _ownGoal;
     protected Goal _targetGoal;
+    protected AiBehavior _aiBehavior;
 
     public void Setup(Player contextPlayer,
                         PlayerStateData contextPlayerStateData,
@@ -21,7 +22,8 @@ public partial class PlayerState : Node
                         Area2D contextTeammateDetectionArea,
                         Area2D contextBallDetectionArea,
                         Goal contextOwnGoal,
-                        Goal contextTargetGoal)
+                        Goal contextTargetGoal,
+                        AiBehavior contextAiBehavior)
     {
         _player = contextPlayer;
         _animationPlayer = contextAnimationPlayer;
@@ -31,6 +33,7 @@ public partial class PlayerState : Node
         _ballDetectionArea = contextBallDetectionArea;
         _ownGoal = contextOwnGoal;
         _targetGoal = contextTargetGoal;
+        _aiBehavior = contextAiBehavior;
     }
 
     // public void TransitionState(Player.State newState,PlayerStateData stateData)

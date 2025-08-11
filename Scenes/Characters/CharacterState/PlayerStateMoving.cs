@@ -7,7 +7,7 @@ public partial class PlayerStateMoving : PlayerState
     {
         if (_player._controlScheme == Player.ControlScheme.CPU)
         {
-
+            _aiBehavior.ProcessAi();
         }
         else
         {

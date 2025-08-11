@@ -29,8 +29,11 @@ public partial class Player : CharacterBody2D
 	private readonly PlayerStateFactroy _stateFactory = new();
 	private string _fullName;
 	private SkinColor _skinColor;
-	private Role _role;
+	public Role _role;
 	private string _country;
+	private AiBehavior _aiBehavior = new();
+	private Vector2 _spawnPosition;
+	public float _weightOnDutySteering;
 
 	public readonly Dictionary<ControlScheme, Texture2D> CONTROL_SCHEME_MAP = new()
 	{
@@ -114,6 +117,9 @@ public partial class Player : CharacterBody2D
 
 		SwitchState(State.MOVING, null);
 		SetShaderProperties();
+
+		SetupAiBehavior();
+		_spawnPosition = Position;
 	}
 
 	public override void _Process(double delta)
@@ -142,6 +148,12 @@ public partial class Player : CharacterBody2D
 		return 1; // 找不到
 	}
 
+	private void SetupAiBehavior()
+	{
+		_aiBehavior.Setup(this, _ball);
+		_aiBehavior.Name = "AI Behavior";
+		AddChild(_aiBehavior);
+	}
 
 	private void SwitchState(State state, PlayerStateData stateData)
 	{
@@ -153,7 +165,7 @@ public partial class Player : CharacterBody2D
 		_currentState = _stateFactory.GetFreshState(state);
 		_currentState.Setup(this, stateData, _animationPlayer, _ball,
 							_teammateDetectionArea, _ballDetectionArea,
-							_ownGoal, _targetGoal);
+							_ownGoal, _targetGoal,_aiBehavior);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -233,4 +245,5 @@ public partial class Player : CharacterBody2D
 			SwitchState(State.CHEST_CONTROL,null);
 		}
 	}
+
 }
