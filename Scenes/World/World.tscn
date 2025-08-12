@@ -28,6 +28,6 @@ centered = false
 _teamHome = "SPAIN"
 
 [node name="Ball" parent="ActorsContainer" index="3"]
-position = Vector2(328, 101)
+position = Vector2(375, 103)
 
 [editable path="ActorsContainer"]

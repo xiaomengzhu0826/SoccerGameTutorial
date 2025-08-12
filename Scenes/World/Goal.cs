@@ -21,8 +21,14 @@ public partial class Goal : Node2D
 
 	public Vector2 GetRandomTargetPosition()
 	{
-		var child = (Node2D)_targets.GetChild(GD.RandRange(0, _targets.GetChildCount()-1));
+		var child = (Node2D)_targets.GetChild(GD.RandRange(0, _targets.GetChildCount() - 1));
 		return child.GlobalPosition;
+	}
+
+	public Vector2 GetCenterTargetPosition()
+	{
+		var targets = (Node2D)_targets.GetChild(_targets.GetChildCount() / 2);
+		return targets.GlobalPosition;
 	}
 
 

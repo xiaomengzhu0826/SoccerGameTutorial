@@ -41,7 +41,7 @@ public partial class PlayerStateMoving : PlayerState
         {
             if (_player.Velocity == Vector2.Zero)
             {
-                if (IsFacingTargetGoal())
+                if (_player.IsFacingTargetGoal())
                 {
                     EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.VOLLEY_KICK, (PlayerStateData)null);
                 }
@@ -63,9 +63,5 @@ public partial class PlayerStateMoving : PlayerState
         // }
     }
 
-    private bool IsFacingTargetGoal()
-    {
-        var directionToTargetGoal = _player.Position.DirectionTo(_targetGoal.Position);
-        return _player._heading.Dot(directionToTargetGoal) > 0;
-    }
+
 }

@@ -6,11 +6,12 @@ public partial class Player : CharacterBody2D
 {
 
 	[Export] public ControlScheme _controlScheme;
-	[Export] public Ball _ball;
-	[Export] private Goal _ownGoal;
-	[Export] private Goal _targetGoal;
+	public Ball _ball;
+	public Goal _ownGoal;
+	public Goal _targetGoal;
 
 	private static readonly float GRAVITY = 8.0f;
+	private static readonly float WALK_ANIM_THRESHOLD = 0.6f;
 
 	private readonly float BALL_CONTROL_HEIGHT_MAX = 10.0f;
 
@@ -30,9 +31,9 @@ public partial class Player : CharacterBody2D
 	private string _fullName;
 	private SkinColor _skinColor;
 	public Role _role;
-	private string _country;
+	public string _country;
 	private AiBehavior _aiBehavior = new();
-	private Vector2 _spawnPosition;
+	public Vector2 _spawnPosition;
 	public float _weightOnDutySteering;
 
 	public readonly Dictionary<ControlScheme, Texture2D> CONTROL_SCHEME_MAP = new()
@@ -44,7 +45,7 @@ public partial class Player : CharacterBody2D
 
 	public enum Country
 	{
-		DEFAULT, 
+		DEFAULT,
 		FRANCE,
 		ARGENTINA,
 		BRAZIL,
@@ -108,6 +109,7 @@ public partial class Player : CharacterBody2D
 
 	public override void _Ready()
 	{
+
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_playerSprite = GetNode<Sprite2D>("PlayerSprite");
 		_controlSprite = GetNode<Sprite2D>("%ControlSprite");
@@ -120,6 +122,7 @@ public partial class Player : CharacterBody2D
 
 		SetupAiBehavior();
 		_spawnPosition = Position;
+		//_ball = (Ball)GetTree().GetNodesInGroup(nameof(Ball))[0];
 	}
 
 	public override void _Process(double delta)
@@ -155,7 +158,7 @@ public partial class Player : CharacterBody2D
 		AddChild(_aiBehavior);
 	}
 
-	private void SwitchState(State state, PlayerStateData stateData)
+	public void SwitchState(State state, PlayerStateData stateData)
 	{
 		if (_currentState != null)
 		{
@@ -165,7 +168,7 @@ public partial class Player : CharacterBody2D
 		_currentState = _stateFactory.GetFreshState(state);
 		_currentState.Setup(this, stateData, _animationPlayer, _ball,
 							_teammateDetectionArea, _ballDetectionArea,
-							_ownGoal, _targetGoal,_aiBehavior);
+							_ownGoal, _targetGoal, _aiBehavior);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -174,13 +177,18 @@ public partial class Player : CharacterBody2D
 
 	public void SetMovementAnimation()
 	{
-		if (Velocity.Length() > 0)
+		var velLehgth = Velocity.Length();
+		if (velLehgth < 1)
 		{
-			_animationPlayer.Play("run");
+			_animationPlayer.Play("idle");
+		}
+		else if (velLehgth < _speed * WALK_ANIM_THRESHOLD)
+		{
+			_animationPlayer.Play("walk");
 		}
 		else
 		{
-			_animationPlayer.Play("idle");
+			_animationPlayer.Play("run");
 		}
 	}
 
@@ -230,6 +238,12 @@ public partial class Player : CharacterBody2D
 		_controlSprite.Texture = CONTROL_SCHEME_MAP[_controlScheme];
 	}
 
+	public bool IsFacingTargetGoal()
+	{
+		var directionToTargetGoal = Position.DirectionTo(_targetGoal.Position);
+		return _heading.Dot(directionToTargetGoal) > 0;
+	}
+
 	public void OnAnimationCompelete()
 	{
 		if (_currentState != null)
@@ -242,7 +256,7 @@ public partial class Player : CharacterBody2D
 	{
 		if (_ball._height > BALL_CONTROL_HEIGHT_MAX)
 		{
-			SwitchState(State.CHEST_CONTROL,null);
+			SwitchState(State.CHEST_CONTROL, null);
 		}
 	}
 

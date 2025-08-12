@@ -30,6 +30,7 @@ public partial class Ball : AnimatableBody2D
 
 	public override void _Ready()
 	{
+		//AddToGroup(nameof(Ball));
 		_playerDetectionArea = GetNode<Area2D>("PlayerDetectionArea");
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
