@@ -7,6 +7,8 @@ public partial class AiBehavior : Node
     private static readonly float SPREAD_ASSIST_FACTOR = 0.8f;
     private static readonly int SHOT_DISTANCE = 150;
     private static readonly float SHOT_PROBABILITY = 0.3f;
+    private static readonly int TACKLE_DISTANCE = 15;
+    private static readonly float TACKLE_PROBABILITY = 0.3f;
 
     public Ball _ball;
     public Player _player;
@@ -53,25 +55,21 @@ public partial class AiBehavior : Node
 
     private void PerformAiDecisions()
     {
-
-        if (_ball._carrier==_player)
+        if (IsBallPossessedByOppenent() && _player.Position.DistanceTo(_ball.Position) < TACKLE_DISTANCE && GD.Randf() < TACKLE_PROBABILITY)
         {
-            var target = _player._targetGoal.GetCenterTargetPosition();
-            if (_player.Position.DistanceTo(target) < SHOT_DISTANCE && GD.RandRange(0, 1) < SHOT_PROBABILITY)
-            {
-                FaceTowardTargetGoal();
-                var shotDirection = _player.Position.DirectionTo(_player._targetGoal.GetRandomTargetPosition());
-                var data = PlayerStateData.Build().SetShotPower(_player._power).SetShotDirection(shotDirection);
-                _player.SwitchState(Player.State.SHOOTING, data);
-            }
+            _player.SwitchState(Player.State.TACKLING, null);
         }
-
-
-
-
-
-
-
+        if (_ball._carrier == _player)
+            {
+                var target = _player._targetGoal.GetCenterTargetPosition();
+                if (_player.Position.DistanceTo(target) < SHOT_DISTANCE && GD.RandRange(0, 1) < SHOT_PROBABILITY)
+                {
+                    FaceTowardTargetGoal();
+                    var shotDirection = _player.Position.DirectionTo(_player._targetGoal.GetRandomTargetPosition());
+                    var data = PlayerStateData.Build().SetShotPower(_player._power).SetShotDirection(shotDirection);
+                    _player.SwitchState(Player.State.SHOOTING, data);
+                }
+            }
     }
 
     public Vector2 GetOndutySteeringForce()
@@ -121,6 +119,11 @@ public partial class AiBehavior : Node
         {
             _player._heading *= -1;
         }
+    }
+
+    public bool IsBallPossessedByOppenent()
+    {
+        return _ball._carrier != null && _ball._carrier._country != _player._country;
     }
 
     public bool IsBallCarriedByTeammate()

@@ -57,10 +57,10 @@ public partial class PlayerStateMoving : PlayerState
         }
 
 
-        // if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
-        // {
-        //     EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING);
-        // }
+        if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        {
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING,(PlayerStateData)null);
+        }
     }
 
 

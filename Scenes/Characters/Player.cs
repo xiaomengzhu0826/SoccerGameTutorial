@@ -20,6 +20,7 @@ public partial class Player : CharacterBody2D
 	private Sprite2D _controlSprite;
 	private Area2D _teammateDetectionArea;
 	private Area2D _ballDetectionArea;
+	private Area2D _tackleDamageEmitterArea;
 
 	public float _speed = 80;
 	public float _power = 70;
@@ -89,7 +90,8 @@ public partial class Player : CharacterBody2D
 		HEADER,
 		VOLLEY_KICK,
 		BICYCLE_KICK,
-		CHEST_CONTROL
+		CHEST_CONTROL,
+		HURT
 	}
 
 	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
@@ -115,6 +117,7 @@ public partial class Player : CharacterBody2D
 		_controlSprite = GetNode<Sprite2D>("%ControlSprite");
 		_teammateDetectionArea = GetNode<Area2D>("TeammateDetection");
 		_ballDetectionArea = GetNode<Area2D>("BallDetectionArea");
+		_tackleDamageEmitterArea = GetNode<Area2D>("TackleDamageEmitterArea");
 		SetControlTexture();
 
 		SwitchState(State.MOVING, null);
@@ -123,9 +126,12 @@ public partial class Player : CharacterBody2D
 		SetupAiBehavior();
 		_spawnPosition = Position;
 		//_ball = (Ball)GetTree().GetNodesInGroup(nameof(Ball))[0];
+		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
 	}
 
-	public override void _Process(double delta)
+
+
+    public override void _Process(double delta)
 	{
 		FlipSprites();
 		SetSpriteVisibility();
@@ -168,7 +174,7 @@ public partial class Player : CharacterBody2D
 		_currentState = _stateFactory.GetFreshState(state);
 		_currentState.Setup(this, stateData, _animationPlayer, _ball,
 							_teammateDetectionArea, _ballDetectionArea,
-							_ownGoal, _targetGoal, _aiBehavior);
+							_ownGoal, _targetGoal, _tackleDamageEmitterArea,_aiBehavior);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -220,7 +226,17 @@ public partial class Player : CharacterBody2D
 
 	private void FlipSprites()
 	{
-		_playerSprite.FlipH = _heading == Vector2.Left ? true : false;
+		//_playerSprite.FlipH = _heading == Vector2.Left ? true : false;
+		if (_heading == Vector2.Right)
+		{
+			_playerSprite.FlipH = false;
+			_tackleDamageEmitterArea.Scale = new Vector2(1, 1);
+		}
+		else
+		{
+			_playerSprite.FlipH = true;
+			_tackleDamageEmitterArea.Scale = new Vector2(-1, 1);
+		}
 	}
 
 	private void SetSpriteVisibility()
@@ -244,7 +260,21 @@ public partial class Player : CharacterBody2D
 		return _heading.Dot(directionToTargetGoal) > 0;
 	}
 
-	public void OnAnimationCompelete()
+	private void OnTacklePlayer(Node2D body)
+	{
+		Player player = (Player)body;
+		if (player != this && player._country != _country && player == _ball._carrier)
+		{
+			player.GetHurt(Position.DirectionTo(player.Position));
+		}
+	}
+
+    private void GetHurt(Vector2 hurtOrigin)
+    {
+		SwitchState(State.HURT, PlayerStateData.Build().SetHurtDirection(hurtOrigin));
+    }
+
+    public void OnAnimationCompelete()
 	{
 		if (_currentState != null)
 		{

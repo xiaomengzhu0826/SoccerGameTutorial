@@ -3,6 +3,8 @@ using System;
 
 public partial class Ball : AnimatableBody2D
 {
+	private static readonly float TUMBLE_HEIGHT_VELOCITY = 1.0f;
+
 	private Sprite2D _ballSprite;
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;
@@ -63,6 +65,14 @@ public partial class Ball : AnimatableBody2D
 		_velocity = shotVelocity;
 		_carrier = null;
 		SwitchState(State.SHOT);
+	}
+
+	public void Tumble(Vector2 tumbleVelocity)
+	{
+		_velocity = tumbleVelocity;
+		_carrier = null;
+		_heightVelocity = TUMBLE_HEIGHT_VELOCITY;
+		SwitchState(State.FREEFORM);
 	}
 
 	public void PassTo(Vector2 destination)

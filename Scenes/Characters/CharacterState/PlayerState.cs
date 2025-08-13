@@ -14,6 +14,7 @@ public partial class PlayerState : Node
     protected Goal _ownGoal;
     protected Goal _targetGoal;
     protected AiBehavior _aiBehavior;
+    protected Area2D _tackleDamageEmitterArea;
 
     public void Setup(Player contextPlayer,
                         PlayerStateData contextPlayerStateData,
@@ -23,6 +24,7 @@ public partial class PlayerState : Node
                         Area2D contextBallDetectionArea,
                         Goal contextOwnGoal,
                         Goal contextTargetGoal,
+                        Area2D contextTackleDamageEmitterArea,
                         AiBehavior contextAiBehavior)
     {
         _player = contextPlayer;
@@ -33,6 +35,7 @@ public partial class PlayerState : Node
         _ballDetectionArea = contextBallDetectionArea;
         _ownGoal = contextOwnGoal;
         _targetGoal = contextTargetGoal;
+        _tackleDamageEmitterArea = contextTackleDamageEmitterArea;
         _aiBehavior = contextAiBehavior;
     }
 

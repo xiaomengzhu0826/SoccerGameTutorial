@@ -1,5 +1,10 @@
-res://Scenes/Characters/AiBehavior.cs
+res://Scenes/Characters/Player.tscn
+res://Shader/replace_color.gdshader
 res://Scenes/Characters/Player.cs
+res://Scenes/World/World.tscn
+res://Scenes/Ball/Ball.tscn
+res://Scenes/World/Goal.tscn
+res://Scenes/World/ActorsContainer.tscn
 res://Scenes/Ball/BallStateFactory.cs
 res://Scenes/Utils/DataLoader.cs
 res://Scenes/Characters/CharacterState/PlayerStateChestControl.cs
@@ -22,10 +27,6 @@ res://Scenes/Utils/KeyUtils.cs
 res://Scenes/World/ActorsContainer.cs
 res://Scenes/Characters/CharacterState/PlayerStateHeader.cs
 res://Scenes/Characters/CharacterState/PlayerState.cs
+res://Scenes/Characters/AiBehavior.cs
 res://Scenes/Ball/BallStates/BallStateShot.cs
-res://Scenes/World/World.tscn
-res://Shader/replace_color.gdshader
-res://Scenes/Characters/Player.tscn
-res://Scenes/Ball/Ball.tscn
-res://Scenes/World/Goal.tscn
-res://Scenes/World/ActorsContainer.tscn
+res://Scenes/Characters/CharacterState/PlayerStateHurt.cs

@@ -12,6 +12,12 @@ public partial class PlayerStateTackling : PlayerState
     public override void _EnterTree()
     {
         _animationPlayer.Play("tackle");
+        _tackleDamageEmitterArea.Monitoring = true;
+    }
+    
+    public override void _ExitTree()
+    {
+         _tackleDamageEmitterArea.Monitoring = false;
     }
 
     public override void _Process(double delta)
@@ -27,7 +33,7 @@ public partial class PlayerStateTackling : PlayerState
         }
         else if (Time.GetTicksMsec() - _timeFinishTackle > DURATION_PRIOR_RECOVERY)
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING,(PlayerStateData)null);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING, (PlayerStateData)null);
         }
     }
 

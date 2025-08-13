@@ -20,6 +20,7 @@ public class PlayerStateFactroy
             {Player.State.BICYCLE_KICK ,() =>new PlayerStateBicycleKick()},
             {Player.State.VOLLEY_KICK ,() =>new PlayerStateVolleyKick()},
             {Player.State.CHEST_CONTROL ,() =>new PlayerStateChestControl()},
+            {Player.State.HURT ,() =>new PlayerStateHurt()},
         };
     }
 
