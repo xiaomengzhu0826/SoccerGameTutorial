@@ -49,5 +49,9 @@ public partial class PlayerState : Node
 
     }
 
+    public virtual bool CanCarryBall()
+    {
+        return false;
+    }
 
 }

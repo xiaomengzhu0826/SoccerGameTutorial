@@ -8,6 +8,7 @@ public partial class Ball : AnimatableBody2D
 	private Sprite2D _ballSprite;
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;
+	private RayCast2D _scoringRayCast;
 
 	public static readonly float BOUNCINESS = 0.8f;
 	public static readonly float DISTANCE_HIGH_PASS = 130.0f;
@@ -36,6 +37,7 @@ public partial class Ball : AnimatableBody2D
 		_playerDetectionArea = GetNode<Area2D>("PlayerDetectionArea");
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
+		_scoringRayCast = GetNode<RayCast2D>("ScoringRayCast");
 
 		SwitchState(State.FREEFORM);
 	}
@@ -43,6 +45,7 @@ public partial class Ball : AnimatableBody2D
 	public override void _Process(double delta)
 	{
 		_ballSprite.Position = Vector2.Up * _height;
+		_scoringRayCast.Rotation = _velocity.Angle();
 	}
 
 
@@ -105,8 +108,17 @@ public partial class Ball : AnimatableBody2D
 		return _currentState != null && _currentState.CanAirInteract();
 	}
 
-	public bool CanAirConnect(float airConnectMinHeight,float airConnectMaxHeight)
+	public bool CanAirConnect(float airConnectMinHeight, float airConnectMaxHeight)
 	{
 		return _height >= airConnectMinHeight && _height <= airConnectMaxHeight;
+	}
+
+	public bool IsHeadedForScoringArea(Area2D scoringArea)
+	{
+		if (!_scoringRayCast.IsColliding())
+		{
+			return false;
+		}
+		return _scoringRayCast.GetCollider() == scoringArea;
 	}
 }

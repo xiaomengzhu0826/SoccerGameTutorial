@@ -37,31 +37,37 @@ public partial class PlayerStateMoving : PlayerState
                 EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
             }
         }
-        else if (_ball.CanAirInteract() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        //else if (_ball.CanAirInteract() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         {
-            if (_player.Velocity == Vector2.Zero)
+            if (_ball.CanAirInteract())
             {
-                if (_player.IsFacingTargetGoal())
+                if (_player.Velocity == Vector2.Zero)
                 {
-                    EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.VOLLEY_KICK, (PlayerStateData)null);
+                    if (_player.IsFacingTargetGoal())
+                    {
+                        EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.VOLLEY_KICK, (PlayerStateData)null);
+                    }
+                    else
+                    {
+                        EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.BICYCLE_KICK, (PlayerStateData)null);
+                    }
                 }
                 else
                 {
-                    EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.BICYCLE_KICK, (PlayerStateData)null);
+                    EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.HEADER, (PlayerStateData)null);
                 }
             }
-            else
+            else if (_player.Velocity != Vector2.Zero)
             {
-                EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.HEADER, (PlayerStateData)null);
+                EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING, (PlayerStateData)null);
             }
-        }
-
-
-        if (_player.Velocity != Vector2.Zero && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
-        {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING,(PlayerStateData)null);
         }
     }
 
+    public override bool CanCarryBall()
+    {
+        return _player._role != Player.Role.GOALIE;
+    }
 
 }

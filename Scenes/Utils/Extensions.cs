@@ -29,4 +29,11 @@ public static class Extensions
         );
     }
 
+    public static IEnumerable<Player> FindOpponents(this IEnumerable<object> bodies, Player currentPlayer)
+    {
+        return bodies
+            .OfType<Player>() // 只取 Player 类型
+            .Where(p => p._country != currentPlayer._country);
+    }
+
 }

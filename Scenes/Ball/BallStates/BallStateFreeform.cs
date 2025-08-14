@@ -27,9 +27,13 @@ public partial class BallStateFreeform : BallState
     private void OnPlayerEnter(Node2D body)
     {
         Player player = (Player)body;
-        _ball._carrier = player;
-        player.ControlBall();
-        EmitSignal(BallState.SignalName.OnStateTransitionRequest, (int)Ball.State.CARRIED);
+        if (player.CanCarryBall())
+        {
+            _ball._carrier = player;
+            player.ControlBall();
+            EmitSignal(BallState.SignalName.OnStateTransitionRequest, (int)Ball.State.CARRIED);
+        }
+
     }
 
     public override bool CanAirInteract()

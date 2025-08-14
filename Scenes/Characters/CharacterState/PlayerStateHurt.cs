@@ -6,7 +6,7 @@ public partial class PlayerStateHurt : PlayerState
     private static readonly int DURATION_HURT = 1000;
     private static readonly float BALL_TUMBLE_SPEED = 100.0f;
     private static readonly float AIR_FRICTION = 35.0f;
-    private static readonly float HURT_HEIGHT_VELOCITY = 3.0f;
+    private static readonly float HURT_HEIGHT_VELOCITY = 1.0f;
 
     private float _timeStartHurt = Time.GetTicksMsec();
 
@@ -16,6 +16,7 @@ public partial class PlayerStateHurt : PlayerState
 
         _timeStartHurt = Time.GetTicksMsec();
         _player._heightVelocity = HURT_HEIGHT_VELOCITY;
+        _player._height = 0.01f;
         if (_ball._carrier == _player)
         {
             _ball.Tumble(_playerStateData.HurtDirection * BALL_TUMBLE_SPEED);

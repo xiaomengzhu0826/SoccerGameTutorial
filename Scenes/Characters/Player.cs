@@ -21,19 +21,25 @@ public partial class Player : CharacterBody2D
 	private Area2D _teammateDetectionArea;
 	private Area2D _ballDetectionArea;
 	private Area2D _tackleDamageEmitterArea;
+	private Area2D _opponentDetectionArea;
+	private Area2D _permanentDamageEmitter;
+	private CollisionShape2D _goalieHandsCollider;
 
 	public float _speed = 80;
 	public float _power = 70;
-	public Vector2 _heading = Vector2.Right;
-	private PlayerState _currentState;
+	public Vector2 _heading = Vector2.Right;	
 	public float _height;
 	public float _heightVelocity;
-	private readonly PlayerStateFactroy _stateFactory = new();
+
+	private PlayerStateFactroy _stateFactory = new();
+	private AiBehaviourFactroy _aiBehaviourFactory = new();
+	private PlayerState _currentState;
+	private AiBehavior _currentAiBehavior;
+
 	private string _fullName;
 	private SkinColor _skinColor;
 	public Role _role;
 	public string _country;
-	private AiBehavior _aiBehavior = new();
 	public Vector2 _spawnPosition;
 	public float _weightOnDutySteering;
 
@@ -91,7 +97,8 @@ public partial class Player : CharacterBody2D
 		VOLLEY_KICK,
 		BICYCLE_KICK,
 		CHEST_CONTROL,
-		HURT
+		HURT,
+		DIVING
 	}
 
 	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
@@ -118,15 +125,21 @@ public partial class Player : CharacterBody2D
 		_teammateDetectionArea = GetNode<Area2D>("TeammateDetection");
 		_ballDetectionArea = GetNode<Area2D>("BallDetectionArea");
 		_tackleDamageEmitterArea = GetNode<Area2D>("TackleDamageEmitterArea");
+		_opponentDetectionArea = GetNode<Area2D>("OpponentDetectionArea");
+		_permanentDamageEmitter = GetNode<Area2D>("PermanentDamageEmitter");
+		_goalieHandsCollider = GetNode<CollisionShape2D>("%GoalieHandsCollider");
 		SetControlTexture();
-
+		SetupAiBehavior();
 		SwitchState(State.MOVING, null);
 		SetShaderProperties();
 
-		SetupAiBehavior();
+		_permanentDamageEmitter.Monitoring = _role == Role.GOALIE;
+		_goalieHandsCollider.Disabled = _role != Role.GOALIE;
+
 		_spawnPosition = Position;
-		//_ball = (Ball)GetTree().GetNodesInGroup(nameof(Ball))[0];
+		
 		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
+		_permanentDamageEmitter.BodyEntered += OnTacklePlayer;
 	}
 
 
@@ -159,9 +172,10 @@ public partial class Player : CharacterBody2D
 
 	private void SetupAiBehavior()
 	{
-		_aiBehavior.Setup(this, _ball);
-		_aiBehavior.Name = "AI Behavior";
-		AddChild(_aiBehavior);
+		_currentAiBehavior = _aiBehaviourFactory.GetAiBehavior(_role);
+		_currentAiBehavior.Setup(this, _ball,_opponentDetectionArea);
+		_currentAiBehavior.Name = "AI Behavior";
+		AddChild(_currentAiBehavior);
 	}
 
 	public void SwitchState(State state, PlayerStateData stateData)
@@ -174,7 +188,7 @@ public partial class Player : CharacterBody2D
 		_currentState = _stateFactory.GetFreshState(state);
 		_currentState.Setup(this, stateData, _animationPlayer, _ball,
 							_teammateDetectionArea, _ballDetectionArea,
-							_ownGoal, _targetGoal, _tackleDamageEmitterArea,_aiBehavior);
+							_ownGoal, _targetGoal, _tackleDamageEmitterArea,_currentAiBehavior);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "PlayerStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -231,11 +245,13 @@ public partial class Player : CharacterBody2D
 		{
 			_playerSprite.FlipH = false;
 			_tackleDamageEmitterArea.Scale = new Vector2(1, 1);
+			_opponentDetectionArea.Scale = new Vector2(1, 1);
 		}
 		else
 		{
 			_playerSprite.FlipH = true;
 			_tackleDamageEmitterArea.Scale = new Vector2(-1, 1);
+			_opponentDetectionArea.Scale=new Vector2(-1, 1);
 		}
 	}
 
@@ -259,6 +275,11 @@ public partial class Player : CharacterBody2D
 		var directionToTargetGoal = Position.DirectionTo(_targetGoal.Position);
 		return _heading.Dot(directionToTargetGoal) > 0;
 	}
+
+	public bool CanCarryBall()
+    {
+		return _currentState != null && _currentState.CanCarryBall();
+    }
 
 	private void OnTacklePlayer(Node2D body)
 	{
@@ -289,5 +310,6 @@ public partial class Player : CharacterBody2D
 			SwitchState(State.CHEST_CONTROL, null);
 		}
 	}
+
 
 }

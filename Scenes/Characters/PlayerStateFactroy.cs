@@ -21,6 +21,7 @@ public class PlayerStateFactroy
             {Player.State.VOLLEY_KICK ,() =>new PlayerStateVolleyKick()},
             {Player.State.CHEST_CONTROL ,() =>new PlayerStateChestControl()},
             {Player.State.HURT ,() =>new PlayerStateHurt()},
+            {Player.State.DIVING ,() =>new PlayerStateDiving()},
         };
     }
 
