@@ -36,4 +36,9 @@ public partial class PlayerStatePreppingShot : PlayerState
             EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.SHOOTING, stateData);
         }
     }
+
+    public override bool CanPass()
+    {
+        return true;
+    }
 }

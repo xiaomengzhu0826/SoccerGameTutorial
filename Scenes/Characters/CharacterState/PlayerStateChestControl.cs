@@ -18,7 +18,12 @@ public partial class PlayerStateChestControl : PlayerState
     {
         if (Time.GetTicksMsec() - _timeSinceControl > DURATION_CONTROL)
         {
-            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING,(PlayerStateData)null);
+            EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING, (PlayerStateData)null);
         }
+    }
+    
+    public override bool CanPass()
+    {
+        return true;
     }
 }

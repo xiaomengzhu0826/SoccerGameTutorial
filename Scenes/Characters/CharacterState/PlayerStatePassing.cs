@@ -13,15 +13,25 @@ public partial class PlayerStatePassing : PlayerState
 
     public override void OnAnimationCompelete()
     {
-        Player passTarget = FindTeammateInView();
-        if (passTarget == null)
+        Player passTarget;
+        if (_playerStateData != null)
         {
-            _ball.PassTo(_ball.Position + _player._heading * _player._speed);
+            passTarget = _playerStateData.PassTarget;
+            _ball.PassTo(passTarget.Position + passTarget.Velocity);
         }
         else
         {
-            _ball.PassTo(passTarget.Position + passTarget.Velocity);
+            passTarget = FindTeammateInView();
+            if (passTarget == null)
+            {
+                _ball.PassTo(_ball.Position + _player._heading * _player._speed);
+            }
+            else
+            {
+                _ball.PassTo(passTarget.Position + passTarget.Velocity);
+            }
         }
+
         EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING, (PlayerStateData)null);
     }
 
@@ -37,7 +47,7 @@ public partial class PlayerStatePassing : PlayerState
             }
         }
         teammatesInView.SortByDistance(_player.GlobalPosition, p => p.GlobalPosition);
-        
+
         if (teammatesInView.Count > 0)
         {
             return (Player)teammatesInView[0];
@@ -46,8 +56,7 @@ public partial class PlayerStatePassing : PlayerState
         {
             return null;
         }
-        
+
     }
 
 }
- 

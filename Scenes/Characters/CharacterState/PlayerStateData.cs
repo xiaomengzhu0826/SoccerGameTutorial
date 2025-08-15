@@ -6,6 +6,7 @@ public partial class PlayerStateData : Resource
     public Vector2 HurtDirection;
     public Vector2 ShotDirection;
     public float ShotPower;
+    public Player PassTarget;
 
     public static PlayerStateData Build()
     {
@@ -29,4 +30,11 @@ public partial class PlayerStateData : Resource
         HurtDirection = direciton;
         return this;
     }
+
+    public PlayerStateData SetPassTarget(Player player)
+    {
+        PassTarget = player;
+        return this;
+    }
+
 }

@@ -54,4 +54,9 @@ public partial class PlayerState : Node
         return false;
     }
 
+    public virtual bool CanPass()
+    {
+        return false;
+    }
+
 }

@@ -270,6 +270,14 @@ public partial class Player : CharacterBody2D
 		_controlSprite.Texture = CONTROL_SCHEME_MAP[_controlScheme];
 	}
 
+	public void GetPassRequest(Player player)
+	{
+		if (_ball._carrier == this && _currentState != null && _currentState.CanPass())
+		{
+			SwitchState(State.PASSING, PlayerStateData.Build().SetPassTarget(player));
+		}
+	}
+
 	public bool IsFacingTargetGoal()
 	{
 		var directionToTargetGoal = Position.DirectionTo(_targetGoal.Position);

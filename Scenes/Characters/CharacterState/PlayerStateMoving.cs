@@ -37,6 +37,10 @@ public partial class PlayerStateMoving : PlayerState
                 EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
             }
         }
+        else if (CanTeammatePassBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
+        {
+            _ball._carrier.GetPassRequest(_player);
+        }
         else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         //else if (_ball.CanAirInteract() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
         {
@@ -68,6 +72,16 @@ public partial class PlayerStateMoving : PlayerState
     public override bool CanCarryBall()
     {
         return _player._role != Player.Role.GOALIE;
+    }
+
+    public bool CanTeammatePassBall()
+    {
+        return _ball._carrier != null && _ball._carrier._country == _player._country && _ball._carrier._controlScheme == Player.ControlScheme.CPU;
+    }
+
+    public override bool CanPass()
+    {
+        return true;
     }
 
 }
