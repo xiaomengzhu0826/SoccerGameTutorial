@@ -173,7 +173,7 @@ public partial class Player : CharacterBody2D
 	private void SetupAiBehavior()
 	{
 		_currentAiBehavior = _aiBehaviourFactory.GetAiBehavior(_role);
-		_currentAiBehavior.Setup(this, _ball,_opponentDetectionArea);
+		_currentAiBehavior.Setup(this, _ball,_opponentDetectionArea,_teammateDetectionArea);
 		_currentAiBehavior.Name = "AI Behavior";
 		AddChild(_currentAiBehavior);
 	}

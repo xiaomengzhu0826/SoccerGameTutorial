@@ -36,4 +36,11 @@ public static class Extensions
             .Where(p => p._country != currentPlayer._country);
     }
 
+    public static IEnumerable<Player> FindTeammates(this IEnumerable<object> bodies, Player currentPlayer)
+    {
+        return bodies
+            .OfType<Player>() // 只取 Player 类型
+            .Where(p => p._country == currentPlayer._country);
+    }
+
 }

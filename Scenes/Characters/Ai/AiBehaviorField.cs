@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class AiBehaviorField : AiBehavior
 {
@@ -17,12 +18,24 @@ public partial class AiBehaviorField : AiBehavior
         {
             totalSteeringForce += GetCarrierSteeringForce();
         }
-        else 
+        else if (IsBallCarriedByTeammate())
+        {
+            totalSteeringForce += GetAssistFormationSteeringForce();
+        }
+        else
         {
             totalSteeringForce += GetOndutySteeringForce();
-            if (IsBallCarriedByTeammate())
+            if (totalSteeringForce.LengthSquared() < 1)
             {
-                totalSteeringForce += GetAssistFormationSteeringForce();
+                if (IsBallPossessedByOppenent())
+                {
+                    totalSteeringForce += GetSpawnSteeringForce();
+                }
+                else if (_ball._carrier == null)
+                {
+                    totalSteeringForce += GetBallProximitySteeringForce();
+                }
+
             }
         }
 
@@ -46,7 +59,7 @@ public partial class AiBehaviorField : AiBehavior
                 var data = PlayerStateData.Build().SetShotPower(_player._power).SetShotDirection(shotDirection);
                 _player.SwitchState(Player.State.SHOOTING, data);
             }
-            else if (HasOppenentsNearby() && GD.Randf() < PASS_PROBABILITY)
+            else if (GD.Randf() < PASS_PROBABILITY && HasOppenentsNearby() && HasTeammateInView())
             {
                 _player.SwitchState(Player.State.PASSING, null);
             }
@@ -74,4 +87,26 @@ public partial class AiBehaviorField : AiBehavior
         var weight = GetBicircularWeight(_player.Position, assistDestination, 30, 0.2f, 60, 1);
         return weight * direction;
     }
+
+    public Vector2 GetBallProximitySteeringForce()
+    {
+        var weight = GetBicircularWeight(_player.Position, _ball.Position, 50f, 1f, 120f, 0);
+        var direction = _player.Position.DirectionTo(_ball.Position);
+        return weight * direction;
+    }
+
+    public Vector2 GetSpawnSteeringForce()
+    {
+        var weight = GetBicircularWeight(_player.Position, _player._spawnPosition, 30, 0, 100, 1);
+        var direction = _player.Position.DirectionTo(_player._spawnPosition);
+        return weight * direction;
+    }
+
+    public bool HasTeammateInView()
+    {
+        var playersInView = _teammateDetectionArea.GetOverlappingAreas();
+        return playersInView.FindTeammates(_player).Count() != 0;
+    }
+
+
 }

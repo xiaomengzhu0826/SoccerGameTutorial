@@ -9,13 +9,15 @@ public partial class AiBehavior : Node
     public Ball _ball;
     public Player _player;
     public Area2D _opponentDetectionArea;
+    public Area2D _teammateDetectionArea;
     private float _timeSinceLastAiTick = Time.GetTicksMsec();
 
-    public void Setup(Player contextPlayer, Ball contextBall, Area2D contextOpponentDetectionArea)
+    public void Setup(Player contextPlayer, Ball contextBall, Area2D contextOpponentDetectionArea,Area2D contextTeammateDetectionArea)
     {
         _player = contextPlayer;
         _ball = contextBall;
         _opponentDetectionArea = contextOpponentDetectionArea;
+        _teammateDetectionArea = contextTeammateDetectionArea;
         _timeSinceLastAiTick = Time.GetTicksMsec() + (float)GD.RandRange(0, DURATION_AI_TICK_FREQUENCY);
     }
 
