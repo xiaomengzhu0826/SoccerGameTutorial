@@ -16,10 +16,10 @@ public partial class ActorsContainer : Node2D
 
 	private Node2D _spawns;
 
-	private List<Player> _squadHome=new();
-	private List<Player> _squadAway=new();
+	private List<Player> _squadHome = new();
+	private List<Player> _squadAway = new();
 	private float _timeSinceLastCacheRefresh = Time.GetTicksMsec();
-	private List<Player> cpuPlayers=new();
+
 
 	public override void _Ready()
 	{
@@ -68,15 +68,16 @@ public partial class ActorsContainer : Node2D
 	{
 		Player player = (Player)PLAYER_PREFAB.Instantiate();
 		player.Init(playerPosition, ball, ownGoal, targetGoal, playerData, country);
+		player.OnSwapRequest += OnPlayerSwapRequest;
 		return player;
 	}
 
+
+
 	private void SetOnDutyWeights()
 	{
-		cpuPlayers.Clear();
 		var squads = _squadHome.Concat(_squadAway);
-		cpuPlayers = squads.FilterCpuAndNoGoalkeeper().ToList();
-
+		List<Player> cpuPlayers = squads.FilterCpuAndNoGoalkeeper().ToList();
 		cpuPlayers.SortByDistanceTo(_ball.GlobalPosition);
 
 		for (int i = 0; i < cpuPlayers.Count; i++)
@@ -85,6 +86,24 @@ public partial class ActorsContainer : Node2D
 		}
 
 	}
+
+	private void OnPlayerSwapRequest(Player requester)
+	{
+		var squad = requester._country == _squadHome[0]._country ? _squadHome : _squadAway;
+		List<Player> cpuPlayers = squad.FilterCpuAndNoGoalkeeper().ToList();
+		cpuPlayers.SortByDistanceTo(_ball.GlobalPosition);
+		var closestCpuToBall = cpuPlayers[0];
+		if (closestCpuToBall.Position.DistanceSquaredTo(_ball.Position) < requester.Position.DistanceSquaredTo(_ball.Position))
+		{
+			var playerControlScheme = requester._controlScheme;
+			requester._controlScheme = Player.ControlScheme.CPU;
+			requester.SetControlTexture();
+			closestCpuToBall._controlScheme = playerControlScheme;
+			closestCpuToBall.SetControlTexture();
+		}
+	}
+	
+
 
 
 

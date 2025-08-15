@@ -4,8 +4,15 @@ using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
+	[Signal] public delegate void OnSwapRequestEventHandler(Player player);
+	
+	// public static void EmitOnSwapRequest(Player player)
+	// {
+	// 	Instance.EmitSignal(SignalName.OnSwapRequest,player);
+	// }
 
 	[Export] public ControlScheme _controlScheme;
+
 	public Ball _ball;
 	public Goal _ownGoal;
 	public Goal _targetGoal;

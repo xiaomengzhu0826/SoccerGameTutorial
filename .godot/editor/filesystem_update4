@@ -1,4 +1,5 @@
-res://Scenes/Characters/Ai/AiBehaviorField.cs
+res://Scenes/Characters/Player.cs
+res://Scenes/World/ActorsContainer.cs
 res://Scenes/World/World.tscn
 res://Shader/replace_color.gdshader
 res://Scenes/Characters/Player.tscn
@@ -22,13 +23,12 @@ res://Scenes/Characters/CharacterState/PlayerStateVolleyKick.cs
 res://Scenes/Ball/BallStates/BallStateCarried.cs
 res://Scenes/Characters/Ai/AiBehavior.cs
 res://Scenes/Characters/CharacterState/PlayerStateHeader.cs
-res://Scenes/World/ActorsContainer.cs
 res://Scenes/Characters/CharacterState/PlayerStatePreppingShot.cs
 res://Scenes/World/MainCamera.cs
 res://Scenes/Characters/CharacterState/PlayerStatePassing.cs
 res://Scenes/Characters/CharacterState/PlayerStateHurt.cs
+res://Scenes/Characters/Ai/AiBehaviorField.cs
 res://Scenes/World/Goal.cs
-res://Scenes/Characters/Player.cs
 res://Scenes/Characters/CharacterState/PlayerStateData.cs
 res://Scenes/Characters/CharacterState/PlayerStateMoving.cs
 res://Scenes/Ball/BallStates/BallStateFreeform.cs

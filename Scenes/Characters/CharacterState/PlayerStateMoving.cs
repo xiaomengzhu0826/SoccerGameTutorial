@@ -26,25 +26,28 @@ public partial class PlayerStateMoving : PlayerState
             _teammateDetectionArea.Rotation = _player.Velocity.Angle();
         }
 
-        if (_player.HasBall())
+        if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
         {
-            if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
+            if (_player.HasBall())
             {
                 EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PASSING, (PlayerStateData)null);
             }
-            else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+            else if (CanTeammatePassBall())
+            {
+                _ball._carrier.GetPassRequest(_player);
+            }
+            else
+            {
+                _player.EmitSignal(nameof(Player.OnSwapRequest), _player);
+            }
+        }
+        else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
+        {
+            if (_player.HasBall())
             {
                 EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.PREPPING_SHOT, (PlayerStateData)null);
             }
-        }
-        else if (CanTeammatePassBall() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.PASS))
-        {
-            _ball._carrier.GetPassRequest(_player);
-        }
-        else if (KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
-        //else if (_ball.CanAirInteract() && KeyUtils.IsActionJustPressed(_player._controlScheme, KeyUtils.Action.SHOOT))
-        {
-            if (_ball.CanAirInteract())
+            else if (_ball.CanAirInteract())
             {
                 if (_player.Velocity == Vector2.Zero)
                 {
@@ -66,7 +69,7 @@ public partial class PlayerStateMoving : PlayerState
             {
                 EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.TACKLING, (PlayerStateData)null);
             }
-        }
+        }     
     }
 
     public override bool CanCarryBall()
