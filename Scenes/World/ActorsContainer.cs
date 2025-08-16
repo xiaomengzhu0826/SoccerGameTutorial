@@ -11,8 +11,7 @@ public partial class ActorsContainer : Node2D
 	[Export] private Ball _ball;
 	[Export] private Goal _goalHome;
 	[Export] private Goal _goalAway;
-	[Export] private string _teamHome;
-	[Export] private string _teamAway;
+
 
 	private Node2D _spawns;
 
@@ -24,9 +23,12 @@ public partial class ActorsContainer : Node2D
 	public override void _Ready()
 	{
 		_spawns = GetNode<Node2D>("Spawns");
-		_squadHome = SpawnPlayer(_teamHome, _goalHome);
+		_squadHome = SpawnPlayer(GameManager.Instance._Countries[0], _goalHome);
 		_spawns.Scale = new Vector2(-1, 1);
-		_squadAway = SpawnPlayer(_teamAway, _goalAway);
+		_squadAway = SpawnPlayer(GameManager.Instance._Countries[1], _goalAway);
+
+		_goalHome.Initialize(GameManager.Instance._Countries[0]);
+		_goalAway.Initialize(GameManager.Instance._Countries[1]);
 
 		foreach (var item in GetChildren())
 		{

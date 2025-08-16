@@ -17,8 +17,6 @@ script = ExtResource("1_osqph")
 _ball = NodePath("Ball")
 _goalHome = NodePath("PitchObjects/GoalHome")
 _goalAway = NodePath("PitchObjects/GoalAway")
-_teamHome = "FRANCE"
-_teamAway = "GERMANY"
 
 [node name="MainCamera" parent="." node_paths=PackedStringArray("_ball") instance=ExtResource("2_8a2xr")]
 _ball = NodePath("../Ball")

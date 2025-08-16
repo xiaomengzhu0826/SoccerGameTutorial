@@ -3,7 +3,7 @@ using System;
 
 public partial class BallState : Node
 {
-    [Signal] public delegate void OnStateTransitionRequestEventHandler(Ball.State newState);
+    [Signal] public delegate void OnStateTransitionRequestEventHandler(Ball.State newState,BallStateData ballStateData);
 
 
     public static readonly float GRAVITY = 10.0f;
@@ -13,10 +13,12 @@ public partial class BallState : Node
     protected Area2D _playerDetectionArea;
     protected AnimationPlayer _animationPlayer;
     protected Sprite2D _ballSprite;
+    protected BallStateData _ballStateData;
 
-    public void Setup(Ball contextBall, Area2D contextPlayerDetectionArea, Player contextCarrier, AnimationPlayer contextAnimationPlayer, Sprite2D contextBallSprite)
+    public void Setup(Ball contextBall,BallStateData contextBallStateData, Area2D contextPlayerDetectionArea, Player contextCarrier, AnimationPlayer contextAnimationPlayer, Sprite2D contextBallSprite)
     {
         _ball = contextBall;
+        _ballStateData = contextBallStateData;
         _playerDetectionArea = contextPlayerDetectionArea;
         _carrier = contextCarrier;
         _animationPlayer = contextAnimationPlayer;
@@ -65,7 +67,7 @@ public partial class BallState : Node
         if (collision != null)
         {
             _ball._velocity = _ball._velocity.Bounce(collision.GetNormal()) * Ball.BOUNCINESS;
-            _ball.SwitchState(Ball.State.FREEFORM);
+            _ball.SwitchState(Ball.State.FREEFORM,(BallStateData)null);
         }
     }
 

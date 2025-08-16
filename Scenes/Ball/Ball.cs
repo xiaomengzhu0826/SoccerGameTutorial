@@ -4,6 +4,8 @@ using System;
 public partial class Ball : AnimatableBody2D
 {
 	private static readonly float TUMBLE_HEIGHT_VELOCITY = 1.0f;
+	private static readonly int DURATION_TUMBLE_LOCK = 200;
+	private static readonly int DURATION_PASS_LOCK = 500;
 
 	private Sprite2D _ballSprite;
 	private Area2D _playerDetectionArea;
@@ -39,7 +41,7 @@ public partial class Ball : AnimatableBody2D
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
 		_scoringRayCast = GetNode<RayCast2D>("ScoringRayCast");
 
-		SwitchState(State.FREEFORM);
+		SwitchState(State.FREEFORM,null);
 	}
 
 	public override void _Process(double delta)
@@ -49,7 +51,7 @@ public partial class Ball : AnimatableBody2D
 	}
 
 
-	public void SwitchState(State state)
+	public void SwitchState(State state,BallStateData ballStateData)
 	{
 		if (_currentState != null)
 		{
@@ -57,7 +59,7 @@ public partial class Ball : AnimatableBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite);
+		_currentState.Setup(this,ballStateData, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "BallStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -67,7 +69,7 @@ public partial class Ball : AnimatableBody2D
 	{
 		_velocity = shotVelocity;
 		_carrier = null;
-		SwitchState(State.SHOT);
+		SwitchState(State.SHOT,null);
 	}
 
 	public void Tumble(Vector2 tumbleVelocity)
@@ -75,7 +77,7 @@ public partial class Ball : AnimatableBody2D
 		_velocity = tumbleVelocity;
 		_carrier = null;
 		_heightVelocity = TUMBLE_HEIGHT_VELOCITY;
-		SwitchState(State.FREEFORM);
+		SwitchState(State.FREEFORM,BallStateData.Build().SetLockDuration(DURATION_TUMBLE_LOCK));
 	}
 
 	public void PassTo(Vector2 destination)
@@ -90,7 +92,7 @@ public partial class Ball : AnimatableBody2D
 		}
 
 		_carrier = null;
-		SwitchState(State.FREEFORM);
+		SwitchState(State.FREEFORM,BallStateData.Build().SetLockDuration(DURATION_PASS_LOCK));
 	}
 
 	public void Stop()

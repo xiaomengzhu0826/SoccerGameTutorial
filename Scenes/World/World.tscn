@@ -25,7 +25,6 @@ texture = ExtResource("3_27jhl")
 centered = false
 
 [node name="ActorsContainer" parent="." instance=ExtResource("5_27jhl")]
-_teamHome = "SPAIN"
 
 [node name="Ball" parent="ActorsContainer" index="3"]
 position = Vector2(375, 103)

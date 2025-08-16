@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b38de5hn2dvqq"]
+[gd_scene load_steps=33 format=3 uid="uid://b38de5hn2dvqq"]
 
 [ext_resource type="Script" uid="uid://corjyn4ss2s78" path="res://Scenes/Characters/Player.cs" id="1_0el0d"]
 [ext_resource type="Texture2D" uid="uid://c6wwxfm2pfiaf" path="res://Assets/art/characters/soccer-player.png" id="1_gjot8"]
@@ -60,6 +60,23 @@ tracks/1/keys = {
 "args": [],
 "method": &"OnAnimationCompelete"
 }]
+}
+
+[sub_resource type="Animation" id="Animation_vtvfp"]
+resource_name = "celebrate"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 18, 24]
 }
 
 [sub_resource type="Animation" id="Animation_b4kmf"]
@@ -196,6 +213,23 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_ypuv8"]
+resource_name = "mourn"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [18]
+}
+
 [sub_resource type="Animation" id="Animation_gc10f"]
 resource_name = "prep_kick"
 length = 0.1
@@ -321,6 +355,7 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_o5en2"),
 &"bicycle_kick": SubResource("Animation_w38he"),
+&"celebrate": SubResource("Animation_vtvfp"),
 &"chest_control": SubResource("Animation_b4kmf"),
 &"dive_down": SubResource("Animation_aal88"),
 &"dive_up": SubResource("Animation_4opfx"),
@@ -328,6 +363,7 @@ _data = {
 &"hurt": SubResource("Animation_5kd0c"),
 &"idle": SubResource("Animation_0el0d"),
 &"kick": SubResource("Animation_qkgjm"),
+&"mourn": SubResource("Animation_ypuv8"),
 &"prep_kick": SubResource("Animation_gc10f"),
 &"recover": SubResource("Animation_7qdam"),
 &"run": SubResource("Animation_gjot8"),

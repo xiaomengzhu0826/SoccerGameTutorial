@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 KeyUtils="*res://Scenes/Utils/KeyUtils.cs"
 DataLoader="*res://Scenes/Utils/DataLoader.cs"
+SignalManager="*res://Scenes/Utils/SignalManager.cs"
+GameManager="*res://Scenes/Utils/GameManager.cs"
 
 [display]
 

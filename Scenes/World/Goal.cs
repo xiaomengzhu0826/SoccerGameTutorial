@@ -6,6 +6,7 @@ public partial class Goal : Node2D
 	private Area2D _backNetArea;
 	private Node2D _targets;
 	private Area2D _scoringArea;
+	private string _country;
 
 	public override void _Ready()
 	{
@@ -14,13 +15,24 @@ public partial class Goal : Node2D
 		_scoringArea = GetNode<Area2D>("ScoringArea");
 
 		_backNetArea.BodyEntered += OnBallEnterNet;
+		_scoringArea.BodyEntered += OnBallEnterScoringArea;
 	}
 
-	private void OnBallEnterNet(Node2D body)
+	public void Initialize(string contextCountry)
+	{
+		_country = contextCountry;
+	}
+
+    private void OnBallEnterNet(Node2D body)
 	{
 		Ball ball = body as Ball;
 		ball.Stop();
 	}
+
+	private void OnBallEnterScoringArea(Node2D body)
+    {
+		SignalManager.EmitOnTeamScored(_country);
+    }
 
 	public Vector2 GetRandomTargetPosition()
 	{

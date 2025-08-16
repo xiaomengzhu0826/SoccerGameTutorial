@@ -27,7 +27,7 @@ public partial class BallStateShot : BallState
     {
         if (Time.GetTicksMsec() - _timeSinceShot > DURATION_SHOT)
         {
-            EmitSignal(BallState.SignalName.OnStateTransitionRequest,(int)Ball.State.FREEFORM);
+            EmitSignal(BallState.SignalName.OnStateTransitionRequest,(int)Ball.State.FREEFORM,BallStateData.Build().SetLockDuration(200));
         }
         else
         {

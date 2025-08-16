@@ -38,8 +38,8 @@ public partial class Player : CharacterBody2D
 	public float _height;
 	public float _heightVelocity;
 
-	private PlayerStateFactroy _stateFactory = new();
-	private AiBehaviourFactroy _aiBehaviourFactory = new();
+	private readonly PlayerStateFactroy _stateFactory = new();
+	private readonly AiBehaviourFactroy _aiBehaviourFactory = new();
 	private PlayerState _currentState;
 	private AiBehavior _currentAiBehavior;
 
@@ -105,7 +105,9 @@ public partial class Player : CharacterBody2D
 		BICYCLE_KICK,
 		CHEST_CONTROL,
 		HURT,
-		DIVING
+		DIVING,
+		CELEBRATE,
+		MOURNING
 	}
 
 	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
@@ -144,9 +146,10 @@ public partial class Player : CharacterBody2D
 		_goalieHandsCollider.Disabled = _role != Role.GOALIE;
 
 		_spawnPosition = Position;
-		
+
 		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
 		_permanentDamageEmitter.BodyEntered += OnTacklePlayer;
+		SignalManager.Instance.OnTeamScored += OnTeamScored;
 	}
 
 
@@ -317,6 +320,18 @@ public partial class Player : CharacterBody2D
 			_currentState.OnAnimationCompelete();
 		}
 	}
+
+	private void OnTeamScored(string country)
+	{
+		if (_country == country)
+		{
+			SwitchState(State.MOURNING, null);
+		}
+		else
+		{
+			SwitchState(State.CELEBRATE, null);
+		}
+    }
 
 	public void ControlBall()
 	{

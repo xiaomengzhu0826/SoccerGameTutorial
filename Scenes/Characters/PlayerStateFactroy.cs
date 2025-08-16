@@ -22,6 +22,9 @@ public class PlayerStateFactroy
             {Player.State.CHEST_CONTROL ,() =>new PlayerStateChestControl()},
             {Player.State.HURT ,() =>new PlayerStateHurt()},
             {Player.State.DIVING ,() =>new PlayerStateDiving()},
+            {Player.State.CELEBRATE ,() =>new PlayerStateCelebrate()},
+            {Player.State.MOURNING ,() =>new PlayerStateMourning()},
+            
         };
     }
 
