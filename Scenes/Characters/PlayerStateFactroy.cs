@@ -24,7 +24,7 @@ public class PlayerStateFactroy
             {Player.State.DIVING ,() =>new PlayerStateDiving()},
             {Player.State.CELEBRATE ,() =>new PlayerStateCelebrate()},
             {Player.State.MOURNING ,() =>new PlayerStateMourning()},
-            
+            {Player.State.RESETING ,() =>new PlayerStateReseting()},
         };
     }
 

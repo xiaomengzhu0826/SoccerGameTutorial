@@ -9,7 +9,7 @@ public partial class AiBehaviorGoalie : AiBehavior
     {
         var totalSteeringForce = GetGoalieSteeringForce();
         totalSteeringForce = totalSteeringForce.LimitLength(1.0f);
-        _player.Velocity = totalSteeringForce * _player._speed;
+        _player.Velocity = totalSteeringForce * _player._Speed;
     }
 
     protected override void PerformAiDecisions()
@@ -24,7 +24,7 @@ public partial class AiBehaviorGoalie : AiBehavior
     {
         var top = _player._ownGoal.GetTopTargetPosition();
         var bottom = _player._ownGoal.GetBottomTargetPosition();
-        var center = _player._spawnPosition;
+        var center = _player._SpawnPosition;
         var targetY = Mathf.Clamp(_ball.Position.Y, top.Y, bottom.Y);
         var destination =new Vector2(center.X, targetY);
         var direction = _player.Position.DirectionTo(destination);

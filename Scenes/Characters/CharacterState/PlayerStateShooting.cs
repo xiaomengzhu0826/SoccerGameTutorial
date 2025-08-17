@@ -23,7 +23,7 @@ public partial class PlayerStateShooting : PlayerState
 
     private void ShootBall()
     {
-        _ball.Shoot(_playerStateData.ShotDirection * _playerStateData.ShotPower);
+        _ball.Shoot(_playerStateData._ShotDirection * _playerStateData._ShotPower);
     }
 
 }

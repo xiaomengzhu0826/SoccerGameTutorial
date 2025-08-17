@@ -18,7 +18,7 @@ public static class Extensions
     public static IEnumerable<Player> FilterCpuAndNoGoalkeeper(this IEnumerable<Player> players)
     {
         return players.Where(p => p._controlScheme == Player.ControlScheme.CPU &&
-                                  p._role != Player.Role.GOALIE);
+                                  p._Role != Player.Role.GOALIE);
     }
 
     public static void SortByDistanceTo(this List<Player> players, Vector2 targetPosition)
@@ -33,14 +33,14 @@ public static class Extensions
     {
         return bodies
             .OfType<Player>() // 只取 Player 类型
-            .Where(p => p._country != currentPlayer._country);
+            .Where(p => p._Country != currentPlayer._Country);
     }
 
     public static IEnumerable<Player> FindTeammates(this IEnumerable<object> bodies, Player currentPlayer)
     {
         return bodies
             .OfType<Player>() // 只取 Player 类型
-            .Where(p => p._country == currentPlayer._country);
+            .Where(p => p._Country == currentPlayer._Country);
     }
 
 }

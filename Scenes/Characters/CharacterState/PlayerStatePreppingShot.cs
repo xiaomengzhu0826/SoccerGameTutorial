@@ -14,7 +14,7 @@ public partial class PlayerStatePreppingShot : PlayerState
         _animationPlayer.Play("prep_kick");
         _player.Velocity = Vector2.Zero;
         _timeStartShot = Time.GetTicksMsec();
-        _shot_direction = _player._heading;
+        _shot_direction = _player._Heading;
     }
 
     public override void _Process(double delta)
@@ -25,7 +25,7 @@ public partial class PlayerStatePreppingShot : PlayerState
             var duration_press = Mathf.Clamp(Time.GetTicksMsec() - _timeStartShot, 0.0, DURATION_MAX_BONUS);
             var ease_time = duration_press / DURATION_MAX_BONUS;
             float bonus = (float)Mathf.Ease(ease_time, EASE_REWARD_FACTOR);
-            float shot_power = _player._power * (1 + bonus);
+            float shot_power = _player._Power * (1 + bonus);
             _shot_direction = _shot_direction.Normalized();
             // var stateData = new PlayerStateData()
             // {

@@ -12,14 +12,14 @@ public partial class PlayerStateHeader : PlayerState
     public override void _EnterTree()
     {
         _animationPlayer.Play("header");
-        _player._height = HEIGHT_START;
-        _player._heightVelocity = HEIGHT_VELOCITY;
+        _player._Height = HEIGHT_START;
+        _player._HeightVelocity = HEIGHT_VELOCITY;
         _ballDetectionArea.BodyEntered += OnBallEntered;
     }
 
     public override void _Process(double delta)
     {
-        if (_player._height == 0)
+        if (_player._Height == 0)
         {
             EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RECOVERING, (PlayerStateData)null);
         }
@@ -32,10 +32,9 @@ public partial class PlayerStateHeader : PlayerState
     private void OnBallEntered(Node2D body)
     {
         Ball contactBall = (Ball)body;
-        GD.Print("1");
         if (contactBall.CanAirConnect(BALL_HEIGHT_MIN,BALL_HEIGHT_MAX))
         {
-            contactBall.Shoot(_player.Velocity.Normalized() * _player._power * BOUNS_POWER);
+            contactBall.Shoot(_player.Velocity.Normalized() * _player._Power * BOUNS_POWER);
         }
     }
 

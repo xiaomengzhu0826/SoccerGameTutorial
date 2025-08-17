@@ -16,7 +16,7 @@ public partial class PlayerStatePassing : PlayerState
         Player passTarget;
         if (_playerStateData != null)
         {
-            passTarget = _playerStateData.PassTarget;
+            passTarget = _playerStateData._PassTarget;
             _ball.PassTo(passTarget.Position + passTarget.Velocity);
         }
         else
@@ -24,7 +24,7 @@ public partial class PlayerStatePassing : PlayerState
             passTarget = FindTeammateInView();
             if (passTarget == null)
             {
-                _ball.PassTo(_ball.Position + _player._heading * _player._speed);
+                _ball.PassTo(_ball.Position + _player._Heading * _player._Speed);
             }
             else
             {

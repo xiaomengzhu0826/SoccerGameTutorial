@@ -20,7 +20,7 @@ public partial class PlayerStateMoving : PlayerState
     private void HandleHumanMovement()
     {
         var direction = KeyUtils.GetInputVector(_player._controlScheme);
-        _player.Velocity = direction * _player._speed;
+        _player.Velocity = direction * _player._Speed;
         if (_player.Velocity != Vector2.Zero)
         {
             _teammateDetectionArea.Rotation = _player.Velocity.Angle();
@@ -74,12 +74,12 @@ public partial class PlayerStateMoving : PlayerState
 
     public override bool CanCarryBall()
     {
-        return _player._role != Player.Role.GOALIE;
+        return _player._Role != Player.Role.GOALIE;
     }
 
     public bool CanTeammatePassBall()
     {
-        return _ball._carrier != null && _ball._carrier._country == _player._country && _ball._carrier._controlScheme == Player.ControlScheme.CPU;
+        return _ball._carrier != null && _ball._carrier._Country == _player._Country && _ball._carrier._controlScheme == Player.ControlScheme.CPU;
     }
 
     public override bool CanPass()

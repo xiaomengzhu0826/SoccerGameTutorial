@@ -28,7 +28,7 @@ public partial class BallStateCarried : BallState
                 vx = Mathf.Cos(_dribbleTime*DRIBBLE_FREQUENCY) * DRIBBLE_INTENSITY;
             }
             
-            if (_carrier._heading.X > 0)
+            if (_carrier._Heading.X > 0)
             {
                 _animationPlayer.Play("roll");
                 _animationPlayer.Advance(0);
@@ -44,6 +44,6 @@ public partial class BallStateCarried : BallState
             _animationPlayer.Play("idle");
         }
         ProcessGravity((float)delta);
-        _ball.Position = _carrier.Position + new Vector2(vx+_carrier._heading.X * OFFSET_FROM_PLAYER.X, OFFSET_FROM_PLAYER.Y);
+        _ball.Position = _carrier.Position + new Vector2(vx+_carrier._Heading.X * OFFSET_FROM_PLAYER.X, OFFSET_FROM_PLAYER.Y);
     }
 }

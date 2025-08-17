@@ -18,7 +18,7 @@ public partial class MainCamera : Camera2D
 	{
 		if (_ball._carrier != null)
 		{
-			Position = _ball._carrier.Position + _ball._carrier._heading * DISTANCE_TARGET;
+			Position = _ball._carrier.Position + _ball._carrier._Heading * DISTANCE_TARGET;
 			PositionSmoothingSpeed = SMOOTHING_BALL_CARRIED;
 		}
 		else

@@ -9,7 +9,7 @@ public partial class PlayerStateDiving : PlayerState
 
     public override void _EnterTree()
     {
-        var targetDive = new Vector2(_player._spawnPosition.X, _ball.Position.Y);
+        var targetDive = new Vector2(_player._SpawnPosition.X, _ball.Position.Y);
         var direction = _player.Position.DirectionTo(targetDive);
         if (direction.Y > 0)
         {
@@ -19,7 +19,7 @@ public partial class PlayerStateDiving : PlayerState
         {
             _animationPlayer.Play("dive_up");
         }
-        _player.Velocity = direction * _player._speed;
+        _player.Velocity = direction * _player._Speed;
         _timeStartDive = Time.GetTicksMsec();
     }
 

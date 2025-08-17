@@ -20,7 +20,7 @@ public partial class PlayerStateBicycleKick : PlayerState
         {
             var destination = _targetGoal.GetRandomTargetPosition();
             var direction = _ball.Position.DirectionTo(destination);
-            contactBall.Shoot(direction * _player._power * BONUS_POWER);
+            contactBall.Shoot(direction * _player._Power * BONUS_POWER);
         }
     }
 

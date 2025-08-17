@@ -9,11 +9,17 @@ public partial class PlayerStateCelebrate : PlayerState
     public override void _EnterTree()
     {
         Celebrate();
+        SignalManager.Instance.OnTeamReset += OnTeamReset;
+    }
+
+    public override void _ExitTree()
+    {
+        SignalManager.Instance.OnTeamReset -= OnTeamReset;
     }
 
     public override void _Process(double delta)
     {
-        if (_player._height == 0)
+        if (_player._Height == 0)
         {
             Celebrate();
         }
@@ -23,7 +29,14 @@ public partial class PlayerStateCelebrate : PlayerState
     private void Celebrate()
     {
         _animationPlayer.Play("celebrate");
-        _player._height = 0.1f;
-        _player._heightVelocity = CELEBRATE_HEIGHT;
+        _player._Height = 0.1f;
+        _player._HeightVelocity = CELEBRATE_HEIGHT;
     }
+
+    private void OnTeamReset()
+    {
+        EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.RESETING, PlayerStateData.Build().SetResetPosition(_player._SpawnPosition));
+    }
+
+    
 }

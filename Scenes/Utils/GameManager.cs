@@ -9,7 +9,7 @@ public partial class GameManager : Node
     private static readonly int DURATION_GAME_SEC = 120;
 
     public float _TimeLeft;
-    public List<string> _Countries = new() { "FRANCE", "ARGENTINA", "BRAZIL", "ENGLAND", "GERMANY", "ITALY", "SPAIN", "USA" };
+    public List<string> _Countries = new() { "FRANCE", "ENGLAND","ARGENTINA", "BRAZIL", "GERMANY", "ITALY", "SPAIN", "USA" };
     public List<int> _Score = new() { 0, 0 };
 
     private readonly GameStateFactory _gameStateFactory = new();

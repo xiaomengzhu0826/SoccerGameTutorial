@@ -61,22 +61,14 @@ public partial class AiBehavior : Node
         }
     }
 
-    protected void FaceTowardTargetGoal()
-    {
-        if (!_player.IsFacingTargetGoal())
-        {
-            _player._heading *= -1;
-        }
-    }
-
     public bool IsBallPossessedByOppenent()
     {
-        return _ball._carrier != null && _ball._carrier._country != _player._country;
+        return _ball._carrier != null && _ball._carrier._Country != _player._Country;
     }
 
     public bool IsBallCarriedByTeammate()
     {
-        return _ball._carrier != null && _ball._carrier != _player && _ball._carrier._country == _player._country;
+        return _ball._carrier != null && _ball._carrier != _player && _ball._carrier._Country == _player._Country;
     }
 
     public bool HasOppenentsNearby()

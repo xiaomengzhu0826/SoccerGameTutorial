@@ -23,7 +23,7 @@ public partial class Ball : AnimatableBody2D
 	public float _heightVelocity;
 	private BallState _currentState;
 	private BallStateFactory _stateFactory = new();
-
+	private Vector2 _spawnPosition;
 
 	public enum State
 	{
@@ -41,8 +41,13 @@ public partial class Ball : AnimatableBody2D
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
 		_scoringRayCast = GetNode<RayCast2D>("ScoringRayCast");
 
-		SwitchState(State.FREEFORM,null);
+		_spawnPosition = Position;
+		SignalManager.Instance.OnTeamReset += OnTeamReset;
+
+		SwitchState(State.FREEFORM, null);
 	}
+
+
 
 	public override void _Process(double delta)
 	{
@@ -51,7 +56,7 @@ public partial class Ball : AnimatableBody2D
 	}
 
 
-	public void SwitchState(State state,BallStateData ballStateData)
+	public void SwitchState(State state, BallStateData ballStateData)
 	{
 		if (_currentState != null)
 		{
@@ -59,7 +64,7 @@ public partial class Ball : AnimatableBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this,ballStateData, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite);
+		_currentState.Setup(this, ballStateData, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "BallStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);
@@ -69,7 +74,7 @@ public partial class Ball : AnimatableBody2D
 	{
 		_velocity = shotVelocity;
 		_carrier = null;
-		SwitchState(State.SHOT,null);
+		SwitchState(State.SHOT, null);
 	}
 
 	public void Tumble(Vector2 tumbleVelocity)
@@ -77,7 +82,7 @@ public partial class Ball : AnimatableBody2D
 		_velocity = tumbleVelocity;
 		_carrier = null;
 		_heightVelocity = TUMBLE_HEIGHT_VELOCITY;
-		SwitchState(State.FREEFORM,BallStateData.Build().SetLockDuration(DURATION_TUMBLE_LOCK));
+		SwitchState(State.FREEFORM, BallStateData.Build().SetLockDuration(DURATION_TUMBLE_LOCK));
 	}
 
 	public void PassTo(Vector2 destination)
@@ -92,7 +97,7 @@ public partial class Ball : AnimatableBody2D
 		}
 
 		_carrier = null;
-		SwitchState(State.FREEFORM,BallStateData.Build().SetLockDuration(DURATION_PASS_LOCK));
+		SwitchState(State.FREEFORM, BallStateData.Build().SetLockDuration(DURATION_PASS_LOCK));
 	}
 
 	public void Stop()
@@ -123,4 +128,11 @@ public partial class Ball : AnimatableBody2D
 		}
 		return _scoringRayCast.GetCollider() == scoringArea;
 	}
+
+	private void OnTeamReset()
+	{
+		Position = _spawnPosition;
+		_velocity = Vector2.Zero;
+		SwitchState(State.FREEFORM,null);
+    }
 }

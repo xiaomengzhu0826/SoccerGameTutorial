@@ -15,11 +15,11 @@ public partial class PlayerStateHurt : PlayerState
         _animationPlayer.Play("hurt");
 
         _timeStartHurt = Time.GetTicksMsec();
-        _player._heightVelocity = HURT_HEIGHT_VELOCITY;
-        _player._height = 0.01f;
+        _player._HeightVelocity = HURT_HEIGHT_VELOCITY;
+        _player._Height = 0.01f;
         if (_ball._carrier == _player)
         {
-            _ball.Tumble(_playerStateData.HurtDirection * BALL_TUMBLE_SPEED);
+            _ball.Tumble(_playerStateData._HurtDirection * BALL_TUMBLE_SPEED);
         }
     }
 

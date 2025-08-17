@@ -40,7 +40,7 @@ public partial class AiBehaviorField : AiBehavior
         }
 
         totalSteeringForce = totalSteeringForce.LimitLength(1.0f);
-        _player.Velocity = totalSteeringForce * _player._speed;
+        _player.Velocity = totalSteeringForce * _player._Speed;
     }
 
     protected override void PerformAiDecisions()
@@ -54,9 +54,9 @@ public partial class AiBehaviorField : AiBehavior
             var target = _player._targetGoal.GetCenterTargetPosition();
             if (_player.Position.DistanceTo(target) < SHOT_DISTANCE && GD.RandRange(0, 1) < SHOT_PROBABILITY)
             {
-                FaceTowardTargetGoal();
+                _player.FaceTowardTargetGoal();
                 var shotDirection = _player.Position.DirectionTo(_player._targetGoal.GetRandomTargetPosition());
-                var data = PlayerStateData.Build().SetShotPower(_player._power).SetShotDirection(shotDirection);
+                var data = PlayerStateData.Build().SetShotPower(_player._Power).SetShotDirection(shotDirection);
                 _player.SwitchState(Player.State.SHOOTING, data);
             }
             else if (GD.Randf() < PASS_PROBABILITY && HasOppenentsNearby() && HasTeammateInView())
@@ -68,7 +68,7 @@ public partial class AiBehaviorField : AiBehavior
 
     public Vector2 GetOndutySteeringForce()
     {
-        return _player._weightOnDutySteering * _player.Position.DirectionTo(_ball.Position);
+        return _player._WeightOnDutySteering * _player.Position.DirectionTo(_ball.Position);
     }
 
     public Vector2 GetCarrierSteeringForce()
@@ -81,7 +81,7 @@ public partial class AiBehaviorField : AiBehavior
 
     public Vector2 GetAssistFormationSteeringForce()
     {
-        var spawnDifference = _ball._carrier._spawnPosition - _player._spawnPosition;
+        var spawnDifference = _ball._carrier._SpawnPosition - _player._SpawnPosition;
         var assistDestination = _ball._carrier.Position - spawnDifference * SPREAD_ASSIST_FACTOR;
         var direction = _player.Position.DirectionTo(assistDestination);
         var weight = GetBicircularWeight(_player.Position, assistDestination, 30, 0.2f, 60, 1);
@@ -97,8 +97,8 @@ public partial class AiBehaviorField : AiBehavior
 
     public Vector2 GetSpawnSteeringForce()
     {
-        var weight = GetBicircularWeight(_player.Position, _player._spawnPosition, 30, 0, 100, 1);
-        var direction = _player.Position.DirectionTo(_player._spawnPosition);
+        var weight = GetBicircularWeight(_player.Position, _player._SpawnPosition, 30, 0, 100, 1);
+        var direction = _player.Position.DirectionTo(_player._SpawnPosition);
         return weight * direction;
     }
 

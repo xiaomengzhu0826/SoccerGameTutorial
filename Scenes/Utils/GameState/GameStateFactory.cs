@@ -15,6 +15,7 @@ public class GameStateFactory
             {GameManager.State.OVERTIME, () => new GameStateOverTime() },
             {GameManager.State.RESET, () => new GameStateReset() },
             {GameManager.State.SCORED, () => new GameStateScored() },
+            {GameManager.State.KICKOFF, () => new GameStateKickOff() },
         };
     }
 

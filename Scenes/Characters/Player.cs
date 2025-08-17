@@ -13,10 +13,6 @@ public partial class Player : CharacterBody2D
 
 	[Export] public ControlScheme _controlScheme;
 
-	public Ball _ball;
-	public Goal _ownGoal;
-	public Goal _targetGoal;
-
 	private static readonly float GRAVITY = 8.0f;
 	private static readonly float WALK_ANIM_THRESHOLD = 0.6f;
 
@@ -32,23 +28,27 @@ public partial class Player : CharacterBody2D
 	private Area2D _permanentDamageEmitter;
 	private CollisionShape2D _goalieHandsCollider;
 
-	public float _speed = 80;
-	public float _power = 70;
-	public Vector2 _heading = Vector2.Right;	
-	public float _height;
-	public float _heightVelocity;
+	public Ball _ball;
+	public Goal _ownGoal;
+	public Goal _targetGoal;
+	public float _Speed = 80;
+	public float _Power = 70;
+	public Vector2 _Heading = Vector2.Right;	
+	public float _Height;
+	public float _HeightVelocity;
+	public Vector2 _KickoffPosition;
+	public Role _Role;
+	public string _Country;
+	public Vector2 _SpawnPosition;
+	public float _WeightOnDutySteering;
 
 	private readonly PlayerStateFactroy _stateFactory = new();
 	private readonly AiBehaviourFactroy _aiBehaviourFactory = new();
 	private PlayerState _currentState;
 	private AiBehavior _currentAiBehavior;
-
 	private string _fullName;
 	private SkinColor _skinColor;
-	public Role _role;
-	public string _country;
-	public Vector2 _spawnPosition;
-	public float _weightOnDutySteering;
+
 
 	public readonly Dictionary<ControlScheme, Texture2D> CONTROL_SCHEME_MAP = new()
 	{
@@ -107,22 +107,24 @@ public partial class Player : CharacterBody2D
 		HURT,
 		DIVING,
 		CELEBRATE,
-		MOURNING
+		MOURNING,
+		RESETING
 	}
 
-	public void Init(Vector2 contextPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
+	public void Init(Vector2 contextPosition, Vector2 contextkickoffPosition, Ball contextBall, Goal contextOwnGoal, Goal contextTargetGoal, PlayerResource contextPlayerData, string contextCountry)
 	{
 		Position = contextPosition;
 		_ball = contextBall;
 		_ownGoal = contextOwnGoal;
 		_targetGoal = contextTargetGoal;
-		_speed = contextPlayerData.Speed;
-		_power = contextPlayerData.Power;
+		_Speed = contextPlayerData.Speed;
+		_Power = contextPlayerData.Power;
 		_fullName = contextPlayerData.FullName;
-		_role = contextPlayerData.Role;
+		_Role = contextPlayerData.Role;
 		_skinColor = contextPlayerData.Skin;
-		_heading = (_targetGoal.Position.X < Position.X) ? Vector2.Left : Vector2.Right;
-		_country = contextCountry;
+		_Heading = (_targetGoal.Position.X < Position.X) ? Vector2.Left : Vector2.Right;
+		_Country = contextCountry;
+		_KickoffPosition = contextkickoffPosition;
 	}
 
 	public override void _Ready()
@@ -142,10 +144,10 @@ public partial class Player : CharacterBody2D
 		SwitchState(State.MOVING, null);
 		SetShaderProperties();
 
-		_permanentDamageEmitter.Monitoring = _role == Role.GOALIE;
-		_goalieHandsCollider.Disabled = _role != Role.GOALIE;
+		_permanentDamageEmitter.Monitoring = _Role == Role.GOALIE;
+		_goalieHandsCollider.Disabled = _Role != Role.GOALIE;
 
-		_spawnPosition = Position;
+		_SpawnPosition = Position;
 
 		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
 		_permanentDamageEmitter.BodyEntered += OnTacklePlayer;
@@ -166,14 +168,14 @@ public partial class Player : CharacterBody2D
 	{
 		var playerShader = _playerSprite.Material as ShaderMaterial;
 		playerShader.SetShaderParameter("skin_color", (int)_skinColor);
-		var countryColor = FindIndexFromName(_country);
+		var countryColor = FindIndexFromName(_Country);
 		playerShader.SetShaderParameter("team_color", countryColor);
 
 	}
 
 	private int FindIndexFromName(string name)
 	{
-		if (Enum.TryParse(_country, true, out Country result))
+		if (Enum.TryParse(_Country, true, out Country result))
 		{
 			return (int)result; // 枚举值本质就是索引
 		}
@@ -182,7 +184,7 @@ public partial class Player : CharacterBody2D
 
 	private void SetupAiBehavior()
 	{
-		_currentAiBehavior = _aiBehaviourFactory.GetAiBehavior(_role);
+		_currentAiBehavior = _aiBehaviourFactory.GetAiBehavior(_Role);
 		_currentAiBehavior.Setup(this, _ball,_opponentDetectionArea,_teammateDetectionArea);
 		_currentAiBehavior.Name = "AI Behavior";
 		AddChild(_currentAiBehavior);
@@ -212,7 +214,7 @@ public partial class Player : CharacterBody2D
 		{
 			_animationPlayer.Play("idle");
 		}
-		else if (velLehgth < _speed * WALK_ANIM_THRESHOLD)
+		else if (velLehgth < _Speed * WALK_ANIM_THRESHOLD)
 		{
 			_animationPlayer.Play("walk");
 		}
@@ -224,34 +226,42 @@ public partial class Player : CharacterBody2D
 
 	private void ProcessGravity(float delta)
 	{
-		if (_height > 0)
+		if (_Height > 0)
 		{
-			_heightVelocity -= GRAVITY * delta;
-			_height += _heightVelocity;
-			if (_height <= 0)
+			_HeightVelocity -= GRAVITY * delta;
+			_Height += _HeightVelocity;
+			if (_Height <= 0)
 			{
-				_height = 0;
+				_Height = 0;
 			}
 		}
-		_playerSprite.Position = Vector2.Up * _height;
+		_playerSprite.Position = Vector2.Up * _Height;
 	}
 
 	public void SetHeading()
 	{
 		if (Velocity.X > 0)
 		{
-			_heading = Vector2.Right;
+			_Heading = Vector2.Right;
 		}
 		else if (Velocity.X < 0)
 		{
-			_heading = Vector2.Left;
+			_Heading = Vector2.Left;
 		}
 	}
+	
+	public void FaceTowardTargetGoal()
+    {
+        if (!IsFacingTargetGoal())
+        {
+            _Heading *= -1;
+        }
+    }
 
 	private void FlipSprites()
 	{
 		//_playerSprite.FlipH = _heading == Vector2.Left ? true : false;
-		if (_heading == Vector2.Right)
+		if (_Heading == Vector2.Right)
 		{
 			_playerSprite.FlipH = false;
 			_tackleDamageEmitterArea.Scale = new Vector2(1, 1);
@@ -261,7 +271,7 @@ public partial class Player : CharacterBody2D
 		{
 			_playerSprite.FlipH = true;
 			_tackleDamageEmitterArea.Scale = new Vector2(-1, 1);
-			_opponentDetectionArea.Scale=new Vector2(-1, 1);
+			_opponentDetectionArea.Scale = new Vector2(-1, 1);
 		}
 	}
 
@@ -273,6 +283,11 @@ public partial class Player : CharacterBody2D
 	public bool HasBall()
 	{
 		return _ball._carrier == this;
+	}
+
+	public bool IsReadyForKickoff()
+	{
+		return _currentState != null && _currentState.IsReadyForKickoff();
 	}
 
 	public void SetControlTexture()
@@ -291,7 +306,7 @@ public partial class Player : CharacterBody2D
 	public bool IsFacingTargetGoal()
 	{
 		var directionToTargetGoal = Position.DirectionTo(_targetGoal.Position);
-		return _heading.Dot(directionToTargetGoal) > 0;
+		return _Heading.Dot(directionToTargetGoal) > 0;
 	}
 
 	public bool CanCarryBall()
@@ -302,7 +317,7 @@ public partial class Player : CharacterBody2D
 	private void OnTacklePlayer(Node2D body)
 	{
 		Player player = (Player)body;
-		if (player != this && player._country != _country && player == _ball._carrier)
+		if (player != this && player._Country != _Country && player == _ball._carrier)
 		{
 			player.GetHurt(Position.DirectionTo(player.Position));
 		}
@@ -323,7 +338,7 @@ public partial class Player : CharacterBody2D
 
 	private void OnTeamScored(string country)
 	{
-		if (_country == country)
+		if (_Country == country)
 		{
 			SwitchState(State.MOURNING, null);
 		}

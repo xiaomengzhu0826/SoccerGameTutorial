@@ -26,7 +26,7 @@ centered = false
 
 [node name="ActorsContainer" parent="." instance=ExtResource("5_27jhl")]
 
-[node name="Ball" parent="ActorsContainer" index="3"]
-position = Vector2(375, 103)
+[node name="Ball" parent="ActorsContainer" index="4"]
+position = Vector2(425, 180)
 
 [editable path="ActorsContainer"]
