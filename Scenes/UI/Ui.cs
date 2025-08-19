@@ -33,6 +33,7 @@ public partial class Ui : CanvasLayer
 		SignalManager.Instance.OnBallReleased += OnBallReleased;
 		SignalManager.Instance.OnScoreChanged += OnScoreChanged;
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
+		SignalManager.Instance.OnGameOver += OnGameOver;
 
 		UpdateScore();
 		UpdateFlag();
@@ -45,7 +46,8 @@ public partial class Ui : CanvasLayer
 		SignalManager.Instance.OnBallPossessed -= OnBallPossessed;
 		SignalManager.Instance.OnBallReleased -= OnBallReleased;
 		SignalManager.Instance.OnScoreChanged += OnScoreChanged;
-		SignalManager.Instance.OnTeamReset += OnTeamReset;
+		SignalManager.Instance.OnTeamReset -= OnTeamReset;
+		SignalManager.Instance.OnGameOver -= OnGameOver;
 	}
 
 	public override void _Process(double delta)
@@ -88,16 +90,28 @@ public partial class Ui : CanvasLayer
 
 	private void OnScoreChanged()
 	{
-		_goalScorerLabel.Text = $"{_lastBallCarrier} SCORED!";
-		_scoreInfoLabel.Text = ToolUtils.GetCurrentScoreInfo(GameManager.Instance._Countries, GameManager.Instance._Score);
-		_animationPlayer.Play("goal_appear");
+		if (!GameManager.Instance.IsTimeUp())
+		{
+			_goalScorerLabel.Text = $"{_lastBallCarrier} SCORED!";
+			_scoreInfoLabel.Text = ToolUtils.GetCurrentScoreInfo(GameManager.Instance._Countries, GameManager.Instance._Score);
+			_animationPlayer.Play("goal_appear");
+		}
+
 		UpdateScore();
-    }
+	}
 
-    private void OnTeamReset()
-    {
-		_animationPlayer.Play("goal_hide");
-    }
-	
+	private void OnTeamReset()
+	{
+		if (GameManager.Instance.HasSomeoneScored())
+		{
+			_animationPlayer.Play("goal_hide");
+		}
+		
+	}
 
+	private void OnGameOver(string countryWinner)
+	{
+		_scoreInfoLabel.Text = ToolUtils.GetFinalScoreInfo(GameManager.Instance._Countries, GameManager.Instance._Score);
+		_animationPlayer.Play("game_over");
+	}
 }

@@ -5,6 +5,7 @@ public partial class GameStateGameOver : GameState
 {
     public override void _EnterTree()
     {
-        GD.Print("Game Over");
+        string countryWinner = GameManager.Instance.GetWinnerCountry();
+        SignalManager.EmitOnGameOver(countryWinner);
     }
 }

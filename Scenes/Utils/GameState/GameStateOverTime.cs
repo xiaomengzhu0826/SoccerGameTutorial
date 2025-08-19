@@ -5,6 +5,18 @@ public partial class GameStateOverTime : GameState
 {
     public override void _EnterTree()
     {
-        GD.Print("Over Time");
+        SignalManager.Instance.OnTeamScored += OnTeamScored;
     }
+
+    public override void _ExitTree()
+    {
+        SignalManager.Instance.OnTeamScored -= OnTeamScored;
+    }
+
+    private void OnTeamScored(string country)
+    {
+        _gameManager.IncreaseScore(country);
+        TransitionState(GameManager.State.GAMEOVER);
+    }
+
 }

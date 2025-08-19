@@ -16,9 +16,9 @@ public partial class GameStateInPlay : GameState
     public override void _Process(double delta)
     {
         _gameManager._TimeLeft -= (float)delta;
-        if (_gameManager._TimeLeft <= 0)
+        if (_gameManager.IsTimeUp())
         {
-            if (_gameManager._Score[0] == _gameManager._Score[1])
+            if (_gameManager.IsGameTied())
             {
                 TransitionState(GameManager.State.OVERTIME);
             }

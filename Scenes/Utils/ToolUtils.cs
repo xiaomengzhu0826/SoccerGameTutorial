@@ -49,4 +49,16 @@ public class ToolUtils
             return $"{countries[1]} LEADS {score[1]} - {score[0]}";
         }
     }
+
+    public static string GetFinalScoreInfo(List<string> countries, int[] score)
+    {
+        if (score[0] > score[1])
+        {
+            return $"{countries[0]} WINS {score[0]} - {score[1]}";
+        }
+        else
+        {
+            return $"{countries[1]} WINS {score[1]} - {score[0]}";
+        }
+    }
 }

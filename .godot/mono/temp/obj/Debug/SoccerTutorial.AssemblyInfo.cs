@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SoccerTutorial")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c0bd05131b3c22cb9d0ba8d1299d50d3840f22c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b4a82541718d526353df59f7a8f38e286adee5c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SoccerTutorial")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SoccerTutorial")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

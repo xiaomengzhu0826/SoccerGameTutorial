@@ -3,7 +3,7 @@ using System;
 
 public partial class PlayerStateCelebrate : PlayerState
 {
-    private static readonly float CELEBRATE_HEIGHT = 1.0f;
+    private static readonly float CELEBRATE_HEIGHT = .7f;
     private static readonly float AIR_FRICTION = 35.0f;
 
     public override void _EnterTree()

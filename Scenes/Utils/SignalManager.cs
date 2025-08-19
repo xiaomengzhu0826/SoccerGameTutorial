@@ -51,12 +51,19 @@ public partial class SignalManager : Node
     {
         Instance.EmitSignal(SignalName.OnBallReleased);
     }
-    
+
     [Signal] public delegate void OnScoreChangedEventHandler();
-    
+
     public static void EmitOnScoreChanged()
     {
         Instance.EmitSignal(SignalName.OnScoreChanged);
+    }
+    
+    [Signal] public delegate void OnGameOverEventHandler(string countryWinner);
+    
+    public static void EmitOnGameOver(string countryWinner)
+    {
+        Instance.EmitSignal(SignalName.OnGameOver,countryWinner);
     }
     
 

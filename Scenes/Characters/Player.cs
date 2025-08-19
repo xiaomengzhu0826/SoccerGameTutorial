@@ -152,12 +152,17 @@ public partial class Player : CharacterBody2D
 		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
 		_permanentDamageEmitter.BodyEntered += OnTacklePlayer;
 		SignalManager.Instance.OnTeamScored += OnTeamScored;
+		SignalManager.Instance.OnGameOver += OnGameOver;
 
 		var initialPosition = _Country == GameManager.Instance._Countries[0] ? _KickoffPosition : _SpawnPosition;
 		SwitchState(State.RESETING, PlayerStateData.Build().SetResetPosition(initialPosition));
 	}
 
-
+	public override void _ExitTree()
+	{
+		SignalManager.Instance.OnTeamScored -= OnTeamScored;
+		SignalManager.Instance.OnGameOver -= OnGameOver;
+	}
 
     public override void _Process(double delta)
 	{
@@ -354,6 +359,18 @@ public partial class Player : CharacterBody2D
 		else
 		{
 			SwitchState(State.CELEBRATE, null);
+		}
+    }
+
+	private void OnGameOver(string countryWinner)
+    {
+        if (_Country == countryWinner)
+		{
+			SwitchState(State.CELEBRATE, null);
+		}
+		else
+		{
+			SwitchState(State.MOURNING, null);
 		}
     }
 

@@ -10,7 +10,7 @@ public partial class GameManager : Node
 
     public float _TimeLeft;
     public List<string> _Countries = new() { "FRANCE", "ENGLAND", "ARGENTINA", "BRAZIL", "GERMANY", "ITALY", "SPAIN", "USA" };
-    public int[] _Score =[0,0] ;
+    public int[] _Score = [0, 0];
     public List<string> _PlayerSetup = new() { "FRANCE", "" };
 
     private readonly GameStateFactory _gameStateFactory = new();
@@ -55,6 +55,37 @@ public partial class GameManager : Node
     public bool IsSinglePlayer()
     {
         return _PlayerSetup[1] == string.Empty;
+    }
+
+    public bool IsGameTied()
+    {
+        return _Score[0] == _Score[1];
+    }
+
+    public bool IsTimeUp()
+    {
+        return _TimeLeft <= 0;
+    }
+
+    public string GetWinnerCountry()
+    {
+        if (IsGameTied())
+        {
+            return null;
+        }
+        return _Score[0] > _Score[1] ? _Countries[0] : _Countries[1];
+    }
+
+    public void IncreaseScore(string countryScoreOn)
+    {
+        var indexCountryScoring = countryScoreOn == _Countries[0] ? 1 : 0;
+        _Score[indexCountryScoring] += 1;
+        SignalManager.EmitOnScoreChanged();
+    }
+
+    public bool HasSomeoneScored()
+    {
+        return _Score[0] > 0 || _Score[1] > 0;
     }
 
 

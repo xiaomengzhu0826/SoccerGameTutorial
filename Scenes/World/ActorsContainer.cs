@@ -124,6 +124,7 @@ public partial class ActorsContainer : Node2D
 
 	private void SetupControlSchemes()
 	{
+		ResetControlSchemes();
 		var p1Country = GameManager.Instance._PlayerSetup[0];
 		if (GameManager.Instance.IsCoop())
 		{
@@ -142,6 +143,15 @@ public partial class ActorsContainer : Node2D
 			var p2Squad = p1Squad == _squadAway ? _squadHome : _squadAway;
 			p1Squad[5].SetControlScheme(Player.ControlScheme.P1);
 			p2Squad[5].SetControlScheme(Player.ControlScheme.P2);
+		}
+	}
+
+	private void ResetControlSchemes()
+	{
+		var squads = _squadHome.Concat(_squadAway);
+		foreach (Player player in squads)
+		{
+			player.SetControlScheme(Player.ControlScheme.CPU);
 		}
 	}
 

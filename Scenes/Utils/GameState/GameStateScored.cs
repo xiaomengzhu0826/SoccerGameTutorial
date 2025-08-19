@@ -9,9 +9,7 @@ public partial class GameStateScored : GameState
 
     public override void _EnterTree()
     {
-        var indexCountryScoring = _gameStateData._CountryScoredOn == _gameManager._Countries[0] ? 1 : 0;
-        GameManager.Instance._Score[indexCountryScoring] += 1;
-        SignalManager.EmitOnScoreChanged();
+        _gameManager.IncreaseScore(_gameStateData._CountryScoredOn);
         _timeSinceCelebrate = Time.GetTicksMsec();
     }
 
