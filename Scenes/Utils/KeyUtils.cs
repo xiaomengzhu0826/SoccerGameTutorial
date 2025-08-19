@@ -2,14 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class KeyUtils : Node
+public class KeyUtils 
 {
-    public static KeyUtils Instance {get;private set;}
-    
-    public override void _Ready()
-    {
-        Instance=this;
-    }
+
     public enum Action { LEFT, RIGHT, UP, DOWN, SHOOT, PASS }
 
     public static readonly Dictionary<Player.ControlScheme, Dictionary<Action, string>> ACTION_MAP = new()

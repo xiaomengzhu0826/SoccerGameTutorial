@@ -33,14 +33,15 @@ public partial class ActorsContainer : Node2D
 		_goalHome.Initialize(GameManager.Instance._Countries[0]);
 		_goalAway.Initialize(GameManager.Instance._Countries[1]);
 
-		foreach (var item in GetChildren())
-		{
-			if (item is Player player && item.GetIndex() == 8)
-			{
-				player._controlScheme = Player.ControlScheme.P1;
-				player.SetControlTexture();
-			}
-		}
+		// foreach (var item in GetChildren())
+		// {
+		// 	if (item is Player player && item.GetIndex() == 8)
+		// 	{
+		// 		player._controlScheme = Player.ControlScheme.P1;
+		// 		player.SetControlTexture();
+		// 	}
+		// }
+		SetupControlSchemes();
 
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
 	}
@@ -115,10 +116,32 @@ public partial class ActorsContainer : Node2D
 		if (closestCpuToBall.Position.DistanceSquaredTo(_ball.Position) < requester.Position.DistanceSquaredTo(_ball.Position))
 		{
 			var playerControlScheme = requester._controlScheme;
-			requester._controlScheme = Player.ControlScheme.CPU;
-			requester.SetControlTexture();
-			closestCpuToBall._controlScheme = playerControlScheme;
-			closestCpuToBall.SetControlTexture();
+			requester.SetControlScheme(Player.ControlScheme.CPU);
+			closestCpuToBall.SetControlScheme(playerControlScheme);;
+
+		}
+	}
+
+	private void SetupControlSchemes()
+	{
+		var p1Country = GameManager.Instance._PlayerSetup[0];
+		if (GameManager.Instance.IsCoop())
+		{
+			var playerSquad = _squadHome[0]._Country == p1Country ? _squadHome : _squadAway;
+			playerSquad[4].SetControlScheme(Player.ControlScheme.P1);
+			playerSquad[5].SetControlScheme(Player.ControlScheme.P2);
+		}
+		else if (GameManager.Instance.IsSinglePlayer())
+		{
+			var playerSquad = _squadHome[0]._Country == p1Country ? _squadHome : _squadAway;
+			playerSquad[5].SetControlScheme(Player.ControlScheme.P1);
+		}
+		else
+		{
+			var p1Squad = _squadHome[0]._Country == p1Country ? _squadHome : _squadAway;
+			var p2Squad = p1Squad == _squadAway ? _squadHome : _squadAway;
+			p1Squad[5].SetControlScheme(Player.ControlScheme.P1);
+			p2Squad[5].SetControlScheme(Player.ControlScheme.P2);
 		}
 	}
 
@@ -132,6 +155,7 @@ public partial class ActorsContainer : Node2D
 				return;
 			}
 		}
+		SetupControlSchemes();
 		_isCheckingForKickoffReadiness = false;
 		SignalManager.EmitOnKickoffReady();
 	}

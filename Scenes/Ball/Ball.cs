@@ -6,6 +6,7 @@ public partial class Ball : AnimatableBody2D
 	private static readonly float TUMBLE_HEIGHT_VELOCITY = 1.0f;
 	private static readonly int DURATION_TUMBLE_LOCK = 200;
 	private static readonly int DURATION_PASS_LOCK = 500;
+	private static readonly float KICKOFF_PASS_DISTANCE = 30.0f;
 
 	private Sprite2D _ballSprite;
 	private Area2D _playerDetectionArea;
@@ -43,10 +44,16 @@ public partial class Ball : AnimatableBody2D
 
 		_spawnPosition = Position;
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
+		SignalManager.Instance.OnKickoffStarted += OnKickoffStarted;
 
 		SwitchState(State.FREEFORM, null);
 	}
 
+	public override void _ExitTree()
+	{
+		SignalManager.Instance.OnTeamReset -= OnTeamReset;
+		SignalManager.Instance.OnKickoffStarted -= OnKickoffStarted;
+	}
 
 
 	public override void _Process(double delta)
@@ -85,7 +92,7 @@ public partial class Ball : AnimatableBody2D
 		SwitchState(State.FREEFORM, BallStateData.Build().SetLockDuration(DURATION_TUMBLE_LOCK));
 	}
 
-	public void PassTo(Vector2 destination)
+	public void PassTo(Vector2 destination,int lockDuration=500)
 	{
 		var direction = GlobalPosition.DirectionTo(destination);
 		var distance = GlobalPosition.DistanceTo(destination);
@@ -97,7 +104,7 @@ public partial class Ball : AnimatableBody2D
 		}
 
 		_carrier = null;
-		SwitchState(State.FREEFORM, BallStateData.Build().SetLockDuration(DURATION_PASS_LOCK));
+		SwitchState(State.FREEFORM, BallStateData.Build().SetLockDuration(lockDuration));
 	}
 
 	public void Stop()
@@ -133,6 +140,11 @@ public partial class Ball : AnimatableBody2D
 	{
 		Position = _spawnPosition;
 		_velocity = Vector2.Zero;
-		SwitchState(State.FREEFORM,null);
+		SwitchState(State.FREEFORM, null);
+	}
+	
+	private void OnKickoffStarted()
+    {
+		PassTo(_spawnPosition + Vector2.Down * KICKOFF_PASS_DISTANCE,0);
     }
 }

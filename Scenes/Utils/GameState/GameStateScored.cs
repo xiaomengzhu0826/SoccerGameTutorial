@@ -11,6 +11,7 @@ public partial class GameStateScored : GameState
     {
         var indexCountryScoring = _gameStateData._CountryScoredOn == _gameManager._Countries[0] ? 1 : 0;
         GameManager.Instance._Score[indexCountryScoring] += 1;
+        SignalManager.EmitOnScoreChanged();
         _timeSinceCelebrate = Time.GetTicksMsec();
     }
 
@@ -18,7 +19,7 @@ public partial class GameStateScored : GameState
     {
         if (Time.GetTicksMsec() - _timeSinceCelebrate > DURATION_CELEBRATE)
         {
-            TransitionState(GameManager.State.RESET);
+            TransitionState(GameManager.State.RESET,_gameStateData);
         }
     }
 }

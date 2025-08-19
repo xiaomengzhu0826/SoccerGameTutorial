@@ -20,6 +20,6 @@ public partial class GameStateReset : GameState
 
     private void OnKickoffReady()
     {
-        TransitionState(GameManager.State.KICKOFF);
+        TransitionState(GameManager.State.KICKOFF,_gameStateData);
     }
 }

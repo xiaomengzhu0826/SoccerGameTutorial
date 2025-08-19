@@ -41,12 +41,13 @@ public partial class Player : CharacterBody2D
 	public string _Country;
 	public Vector2 _SpawnPosition;
 	public float _WeightOnDutySteering;
+	public string _FullName;
 
 	private readonly PlayerStateFactroy _stateFactory = new();
 	private readonly AiBehaviourFactroy _aiBehaviourFactory = new();
 	private PlayerState _currentState;
 	private AiBehavior _currentAiBehavior;
-	private string _fullName;
+	
 	private SkinColor _skinColor;
 
 
@@ -119,7 +120,7 @@ public partial class Player : CharacterBody2D
 		_targetGoal = contextTargetGoal;
 		_Speed = contextPlayerData.Speed;
 		_Power = contextPlayerData.Power;
-		_fullName = contextPlayerData.FullName;
+		_FullName = contextPlayerData.FullName;
 		_Role = contextPlayerData.Role;
 		_skinColor = contextPlayerData.Skin;
 		_Heading = (_targetGoal.Position.X < Position.X) ? Vector2.Left : Vector2.Right;
@@ -141,7 +142,6 @@ public partial class Player : CharacterBody2D
 		_goalieHandsCollider = GetNode<CollisionShape2D>("%GoalieHandsCollider");
 		SetControlTexture();
 		SetupAiBehavior();
-		SwitchState(State.MOVING, null);
 		SetShaderProperties();
 
 		_permanentDamageEmitter.Monitoring = _Role == Role.GOALIE;
@@ -152,6 +152,9 @@ public partial class Player : CharacterBody2D
 		_tackleDamageEmitterArea.BodyEntered += OnTacklePlayer;
 		_permanentDamageEmitter.BodyEntered += OnTacklePlayer;
 		SignalManager.Instance.OnTeamScored += OnTeamScored;
+
+		var initialPosition = _Country == GameManager.Instance._Countries[0] ? _KickoffPosition : _SpawnPosition;
+		SwitchState(State.RESETING, PlayerStateData.Build().SetResetPosition(initialPosition));
 	}
 
 
@@ -273,6 +276,12 @@ public partial class Player : CharacterBody2D
 			_tackleDamageEmitterArea.Scale = new Vector2(-1, 1);
 			_opponentDetectionArea.Scale = new Vector2(-1, 1);
 		}
+	}
+
+	public void SetControlScheme(ControlScheme scheme)
+	{
+		_controlScheme = scheme;
+		SetControlTexture();
 	}
 
 	private void SetSpriteVisibility()

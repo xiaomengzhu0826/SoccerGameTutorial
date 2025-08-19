@@ -5,6 +5,16 @@ public partial class PlayerStateReseting : PlayerState
 {
     private bool _hasArrived;
 
+    public override void _EnterTree()
+    {
+        SignalManager.Instance.OnKickoffStarted += OnKickoffStarted;
+    }
+
+    public override void _ExitTree()
+    {
+        SignalManager.Instance.OnKickoffStarted -= OnKickoffStarted;
+    }
+
     public override void _Process(double delta)
     {
         if (!_hasArrived)
@@ -28,5 +38,10 @@ public partial class PlayerStateReseting : PlayerState
     public override bool IsReadyForKickoff()
     {
         return _hasArrived;
+    }
+    
+    private void OnKickoffStarted()
+    {
+        EmitSignal(PlayerState.SignalName.OnStateTransitionRequest, (int)Player.State.MOVING, (PlayerStateData)null);
     }
 }

@@ -15,6 +15,12 @@ public partial class BallStateCarried : BallState
         {
             throw new InvalidOperationException("Player is null");
         }
+        SignalManager.EmitOnBallPossessed(_carrier._FullName);
+    }
+    
+    public override void _ExitTree()
+    {
+        SignalManager.EmitOnBallReleased();
     }
 
     public override void _Process(double delta)
@@ -25,9 +31,9 @@ public partial class BallStateCarried : BallState
         {
             if (_carrier.Velocity.X != 0)
             {
-                vx = Mathf.Cos(_dribbleTime*DRIBBLE_FREQUENCY) * DRIBBLE_INTENSITY;
+                vx = Mathf.Cos(_dribbleTime * DRIBBLE_FREQUENCY) * DRIBBLE_INTENSITY;
             }
-            
+
             if (_carrier._Heading.X > 0)
             {
                 _animationPlayer.Play("roll");
@@ -44,6 +50,6 @@ public partial class BallStateCarried : BallState
             _animationPlayer.Play("idle");
         }
         ProcessGravity((float)delta);
-        _ball.Position = _carrier.Position + new Vector2(vx+_carrier._Heading.X * OFFSET_FROM_PLAYER.X, OFFSET_FROM_PLAYER.Y);
+        _ball.Position = _carrier.Position + new Vector2(vx + _carrier._Heading.X * OFFSET_FROM_PLAYER.X, OFFSET_FROM_PLAYER.Y);
     }
 }
