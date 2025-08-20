@@ -6,6 +6,7 @@ using System.Linq;
 public partial class ActorsContainer : Node2D
 {
 	private static readonly PackedScene PLAYER_PREFAB = GD.Load<PackedScene>("res://Scenes/Characters/Player.tscn");
+	private static readonly PackedScene SPARK_PREFAB = GD.Load<PackedScene>("res://Scenes/World/Spark.tscn");
 	private static readonly int DURATION_WEIGHT_CACHE = 200;
 
 	[Export] private Ball _ball;
@@ -44,11 +45,18 @@ public partial class ActorsContainer : Node2D
 		SetupControlSchemes();
 
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
+		SignalManager.Instance.OnImpactReceived += OnImpactReceived;
+	}
+
+	public override void _ExitTree()
+	{
+		SignalManager.Instance.OnTeamReset -= OnTeamReset;
+		SignalManager.Instance.OnImpactReceived -= OnImpactReceived;
 	}
 
 
 
-	public override void _Process(double delta)
+    public override void _Process(double delta)
 	{
 		if (Time.GetTicksMsec() - _timeSinceLastCacheRefresh > DURATION_WEIGHT_CACHE)
 		{
@@ -77,17 +85,17 @@ public partial class ActorsContainer : Node2D
 				var offensekickoffPosition = _kickOffs.GetChild(i - 4) as Node2D;
 				kickoffPosition = offensekickoffPosition.GlobalPosition;
 			}
-			var player = SpawnPlayer(playerPosition,kickoffPosition, _ball, ownGoal, targetGoal, playerData, country);
+			var player = SpawnPlayer(playerPosition, kickoffPosition, _ball, ownGoal, targetGoal, playerData, country);
 			playerNodes.Add(player);
 			AddChild(player);
 		}
 		return playerNodes;
 	}
 
-	private Player SpawnPlayer(Vector2 playerPosition,Vector2 kickoffPosition, Ball ball, Goal ownGoal, Goal targetGoal, PlayerResource playerData, string country)
+	private Player SpawnPlayer(Vector2 playerPosition, Vector2 kickoffPosition, Ball ball, Goal ownGoal, Goal targetGoal, PlayerResource playerData, string country)
 	{
 		Player player = (Player)PLAYER_PREFAB.Instantiate();
-		player.Init(playerPosition, kickoffPosition,ball, ownGoal, targetGoal, playerData, country);
+		player.Init(playerPosition, kickoffPosition, ball, ownGoal, targetGoal, playerData, country);
 		player.OnSwapRequest += OnPlayerSwapRequest;
 		return player;
 	}
@@ -117,7 +125,7 @@ public partial class ActorsContainer : Node2D
 		{
 			var playerControlScheme = requester._controlScheme;
 			requester.SetControlScheme(Player.ControlScheme.CPU);
-			closestCpuToBall.SetControlScheme(playerControlScheme);;
+			closestCpuToBall.SetControlScheme(playerControlScheme); ;
 
 		}
 	}
@@ -169,12 +177,17 @@ public partial class ActorsContainer : Node2D
 		_isCheckingForKickoffReadiness = false;
 		SignalManager.EmitOnKickoffReady();
 	}
-	
+
 	private void OnTeamReset()
 	{
 		_isCheckingForKickoffReadiness = true;
 	}
 
-
+	private void OnImpactReceived(Vector2 impactPosition, bool isHighImpact)
+	{
+		Node2D spark = (Node2D)SPARK_PREFAB.Instantiate();
+		spark.Position = impactPosition;
+		AddChild(spark);
+    }
 
 }

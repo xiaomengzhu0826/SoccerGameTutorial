@@ -58,12 +58,19 @@ public partial class SignalManager : Node
     {
         Instance.EmitSignal(SignalName.OnScoreChanged);
     }
-    
+
     [Signal] public delegate void OnGameOverEventHandler(string countryWinner);
-    
+
     public static void EmitOnGameOver(string countryWinner)
     {
-        Instance.EmitSignal(SignalName.OnGameOver,countryWinner);
+        Instance.EmitSignal(SignalName.OnGameOver, countryWinner);
+    }
+    
+    [Signal] public delegate void OnImpactReceivedEventHandler(Vector2 impactPosition,bool isHighImpact);
+    
+    public static void EmitOnImpactReceived(Vector2 impactPosition,bool isHighImpact)
+    {
+        Instance.EmitSignal(SignalName.OnImpactReceived,impactPosition ,isHighImpact);
     }
     
 

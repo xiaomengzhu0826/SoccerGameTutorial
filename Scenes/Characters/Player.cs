@@ -27,6 +27,8 @@ public partial class Player : CharacterBody2D
 	private Area2D _opponentDetectionArea;
 	private Area2D _permanentDamageEmitter;
 	private CollisionShape2D _goalieHandsCollider;
+	private Node2D _rootParticles;
+	private GpuParticles2D _runParticles;
 
 	public Ball _ball;
 	public Goal _ownGoal;
@@ -140,6 +142,8 @@ public partial class Player : CharacterBody2D
 		_opponentDetectionArea = GetNode<Area2D>("OpponentDetectionArea");
 		_permanentDamageEmitter = GetNode<Area2D>("PermanentDamageEmitter");
 		_goalieHandsCollider = GetNode<CollisionShape2D>("%GoalieHandsCollider");
+		_rootParticles=GetNode<Node2D>("RootParticles");
+		_runParticles=GetNode<GpuParticles2D>("%RunParticles");
 		SetControlTexture();
 		SetupAiBehavior();
 		SetShaderProperties();
@@ -274,12 +278,14 @@ public partial class Player : CharacterBody2D
 			_playerSprite.FlipH = false;
 			_tackleDamageEmitterArea.Scale = new Vector2(1, 1);
 			_opponentDetectionArea.Scale = new Vector2(1, 1);
+			_rootParticles.Scale = new Vector2(1, 1);
 		}
 		else
 		{
 			_playerSprite.FlipH = true;
 			_tackleDamageEmitterArea.Scale = new Vector2(-1, 1);
 			_opponentDetectionArea.Scale = new Vector2(-1, 1);
+			_rootParticles.Scale= new Vector2(-1, 1);
 		}
 	}
 
@@ -292,6 +298,7 @@ public partial class Player : CharacterBody2D
 	private void SetSpriteVisibility()
 	{
 		_controlSprite.Visible = HasBall() || _controlScheme != ControlScheme.CPU;
+		_runParticles.Emitting = Velocity.Length() == _Speed;
 	}
 
 	public bool HasBall()

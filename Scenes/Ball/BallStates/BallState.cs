@@ -14,8 +14,9 @@ public partial class BallState : Node
     protected AnimationPlayer _animationPlayer;
     protected Sprite2D _ballSprite;
     protected BallStateData _ballStateData;
+    protected GpuParticles2D _shotParticles;
 
-    public void Setup(Ball contextBall,BallStateData contextBallStateData, Area2D contextPlayerDetectionArea, Player contextCarrier, AnimationPlayer contextAnimationPlayer, Sprite2D contextBallSprite)
+    public void Setup(Ball contextBall, BallStateData contextBallStateData, Area2D contextPlayerDetectionArea, Player contextCarrier, AnimationPlayer contextAnimationPlayer, Sprite2D contextBallSprite, GpuParticles2D contextShotParticles)
     {
         _ball = contextBall;
         _ballStateData = contextBallStateData;
@@ -23,6 +24,7 @@ public partial class BallState : Node
         _carrier = contextCarrier;
         _animationPlayer = contextAnimationPlayer;
         _ballSprite = contextBallSprite;
+        _shotParticles = contextShotParticles;
     }
 
     public void SetBallAnimationFromVelocity()

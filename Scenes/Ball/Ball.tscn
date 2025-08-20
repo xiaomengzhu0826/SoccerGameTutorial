@@ -1,8 +1,26 @@
-[gd_scene load_steps=10 format=3 uid="uid://d068glosk4wja"]
+[gd_scene load_steps=14 format=3 uid="uid://d068glosk4wja"]
 
 [ext_resource type="Script" uid="uid://be3he0fxtr6u0" path="res://Scenes/Ball/Ball.cs" id="1_dvc57"]
 [ext_resource type="Texture2D" uid="uid://djhwdbov7kpxw" path="res://Assets/art/props/soccer-ball.png" id="1_rcvud"]
+[ext_resource type="Texture2D" uid="uid://c7xcwt5a73qpd" path="res://Assets/art/particles/white-circle.png" id="2_75gsl"]
 [ext_resource type="Texture2D" uid="uid://drqy45hsoh826" path="res://Assets/art/props/ball-shadow.png" id="2_xo6r3"]
+
+[sub_resource type="Curve" id="Curve_g8do5"]
+_data = [Vector2(0, 0.317512), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_eodbk"]
+curve = SubResource("Curve_g8do5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qpypm"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.2
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_eodbk")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rcvud"]
 radius = 5.0
@@ -72,6 +90,14 @@ collision_layer = 4
 collision_mask = 33
 sync_to_physics = false
 script = ExtResource("1_dvc57")
+
+[node name="ShotParticles" type="GPUParticles2D" parent="."]
+position = Vector2(0, -8)
+emitting = false
+amount = 30
+texture = ExtResource("2_75gsl")
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_qpypm")
 
 [node name="BallSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_rcvud")

@@ -3,12 +3,14 @@ using System;
 
 public partial class PlayerStateCelebrate : PlayerState
 {
-    private static readonly float CELEBRATE_HEIGHT = .7f;
+    private static readonly float CELEBRATE_HEIGHT = 1f;
     private static readonly float AIR_FRICTION = 35.0f;
+
+    private int _initialDelay = GD.RandRange(200, 500);
+	private float _timeSinceCelebrating = Time.GetTicksMsec();
 
     public override void _EnterTree()
     {
-        Celebrate();
         SignalManager.Instance.OnTeamReset += OnTeamReset;
     }
 
@@ -19,7 +21,7 @@ public partial class PlayerStateCelebrate : PlayerState
 
     public override void _Process(double delta)
     {
-        if (_player._Height == 0)
+        if (_player._Height == 0 && Time.GetTicksMsec()-_timeSinceCelebrating>_initialDelay)
         {
             Celebrate();
         }

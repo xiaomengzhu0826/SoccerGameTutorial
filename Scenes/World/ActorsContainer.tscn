@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bx81r7gww6n4g"]
+[gd_scene load_steps=8 format=3 uid="uid://bx81r7gww6n4g"]
 
 [ext_resource type="PackedScene" uid="uid://ce7e3jnwvtywo" path="res://Scenes/World/Goal.tscn" id="1_2rtxt"]
 [ext_resource type="Script" uid="uid://n7y57myresdv" path="res://Scenes/World/ActorsContainer.cs" id="1_osqph"]
-[ext_resource type="PackedScene" uid="uid://dmpat8j6mpjqm" path="res://Scenes/World/MainCamera.tscn" id="2_8a2xr"]
 [ext_resource type="Texture2D" uid="uid://beba8abay5mvj" path="res://Assets/art/backgrounds/top-wall.png" id="2_osqph"]
 [ext_resource type="Texture2D" uid="uid://bg4m8wlmfa8j3" path="res://Assets/art/backgrounds/bottom-wall.png" id="3_8a2xr"]
 [ext_resource type="Texture2D" uid="uid://bannrjw57k54" path="res://Assets/art/backgrounds/side-wall.png" id="4_0mwi7"]
@@ -17,9 +16,6 @@ script = ExtResource("1_osqph")
 _ball = NodePath("Ball")
 _goalHome = NodePath("PitchObjects/GoalHome")
 _goalAway = NodePath("PitchObjects/GoalAway")
-
-[node name="MainCamera" parent="." node_paths=PackedStringArray("_ball") instance=ExtResource("2_8a2xr")]
-_ball = NodePath("../Ball")
 
 [node name="Spawns" type="Node2D" parent="."]
 position = Vector2(425, 180)

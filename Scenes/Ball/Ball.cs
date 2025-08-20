@@ -12,6 +12,7 @@ public partial class Ball : AnimatableBody2D
 	private Area2D _playerDetectionArea;
 	private AnimationPlayer _animationPlayer;
 	private RayCast2D _scoringRayCast;
+	private GpuParticles2D _shotParticles;
 
 	public static readonly float BOUNCINESS = 0.8f;
 	public static readonly float DISTANCE_HIGH_PASS = 130.0f;
@@ -36,17 +37,20 @@ public partial class Ball : AnimatableBody2D
 
 	public override void _Ready()
 	{
+		AddToGroup("ball");
 		//AddToGroup(nameof(Ball));
 		_playerDetectionArea = GetNode<Area2D>("PlayerDetectionArea");
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
 		_scoringRayCast = GetNode<RayCast2D>("ScoringRayCast");
+		_shotParticles = GetNode<GpuParticles2D>("ShotParticles");
 
 		_spawnPosition = Position;
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
 		SignalManager.Instance.OnKickoffStarted += OnKickoffStarted;
 
 		SwitchState(State.FREEFORM, null);
+		
 	}
 
 	public override void _ExitTree()
@@ -71,7 +75,7 @@ public partial class Ball : AnimatableBody2D
 			_currentState.QueueFree();
 		}
 		_currentState = _stateFactory.GetFreshState(state);
-		_currentState.Setup(this, ballStateData, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite);
+		_currentState.Setup(this, ballStateData, _playerDetectionArea, _carrier, _animationPlayer, _ballSprite,_shotParticles);
 		_currentState.OnStateTransitionRequest += SwitchState;
 		_currentState.Name = "BallStateMachine:" + state.ToString();
 		CallDeferred("add_child", _currentState);

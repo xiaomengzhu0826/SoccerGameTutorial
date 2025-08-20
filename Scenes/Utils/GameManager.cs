@@ -7,6 +7,7 @@ public partial class GameManager : Node
     public static GameManager Instance { get; private set; }
 
     private static readonly int DURATION_GAME_SEC = 120;
+    private static readonly int DURATION_IMPACT_PAUSE = 100;
 
     public float _TimeLeft;
     public List<string> _Countries = new() { "FRANCE", "ENGLAND", "ARGENTINA", "BRAZIL", "GERMANY", "ITALY", "SPAIN", "USA" };
@@ -15,6 +16,7 @@ public partial class GameManager : Node
 
     private readonly GameStateFactory _gameStateFactory = new();
     private GameState _currentState;
+    private float _timeSincePaused = Time.GetTicksMsec();
 
     public enum State
     {
@@ -29,9 +31,23 @@ public partial class GameManager : Node
     public override void _Ready()
     {
         Instance = this;
+        ProcessMode = ProcessModeEnum.Always;
         _TimeLeft = DURATION_GAME_SEC;
-
+        SignalManager.Instance.OnImpactReceived += OnImpactReceived;
         SwitchState(State.RESET);
+    }
+
+    public override void _ExitTree()
+    {
+        SignalManager.Instance.OnImpactReceived -= OnImpactReceived;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (GetTree().Paused && Time.GetTicksMsec() - _timeSincePaused > DURATION_IMPACT_PAUSE)
+        {
+            GetTree().Paused = false;
+        }
     }
 
     public void SwitchState(State state, GameStateData data = null)
@@ -86,6 +102,15 @@ public partial class GameManager : Node
     public bool HasSomeoneScored()
     {
         return _Score[0] > 0 || _Score[1] > 0;
+    }
+
+    private void OnImpactReceived(Vector2 impactPosition, bool isHighImpact)
+    {
+        if (isHighImpact)
+        {
+            _timeSincePaused=Time.GetTicksMsec();
+            GetTree().Paused = true;
+        }
     }
 
 
