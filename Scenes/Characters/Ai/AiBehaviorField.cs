@@ -34,6 +34,7 @@ public partial class AiBehaviorField : AiBehavior
                 else if (_ball._carrier == null)
                 {
                     totalSteeringForce += GetBallProximitySteeringForce();
+                    totalSteeringForce += GetDensityAroundBallSteeringForce();
                 }
 
             }
@@ -100,6 +101,18 @@ public partial class AiBehaviorField : AiBehavior
         var weight = GetBicircularWeight(_player.Position, _player._SpawnPosition, 30, 0, 100, 1);
         var direction = _player.Position.DirectionTo(_player._SpawnPosition);
         return weight * direction;
+    }
+
+    public Vector2 GetDensityAroundBallSteeringForce()
+    {
+        var nbTeammatesNearBall = _ball.GetProximityTeammatesCount(_player._Country);
+        if (nbTeammatesNearBall == 0)
+        {
+            return Vector2.Zero;
+        }
+        var weight = 1 - 1.0 / nbTeammatesNearBall;
+        var direction = _ball.Position.DirectionTo(_player.Position);
+        return (float)weight * direction;
     }
 
     public bool HasTeammateInView()

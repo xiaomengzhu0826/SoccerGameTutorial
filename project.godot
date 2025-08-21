@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 DataLoader="*res://Scenes/Utils/DataLoader.cs"
 SignalManager="*res://Scenes/Utils/SignalManager.cs"
 GameManager="*res://Scenes/Utils/GameManager.cs"
+SoundManager="*res://Scenes/Utils/SoundManager.cs"
 
 [display]
 

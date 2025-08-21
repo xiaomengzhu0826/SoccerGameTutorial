@@ -20,6 +20,7 @@ public partial class PlayerStateHurt : PlayerState
         if (_ball._carrier == _player)
         {
             _ball.Tumble(_playerStateData._HurtDirection * BALL_TUMBLE_SPEED);
+            SoundManager.Instance.Play(SoundManager.Sound.HURT);
             SignalManager.EmitOnImpactReceived(_player.Position, false);
         }
     }

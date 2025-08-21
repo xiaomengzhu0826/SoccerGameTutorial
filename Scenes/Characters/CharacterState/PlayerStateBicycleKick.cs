@@ -20,6 +20,7 @@ public partial class PlayerStateBicycleKick : PlayerState
         {
             var destination = _targetGoal.GetRandomTargetPosition();
             var direction = _ball.Position.DirectionTo(destination);
+            SoundManager.Instance.Play(SoundManager.Sound.POWERSHOT);
             contactBall.Shoot(direction * _player._Power * BONUS_POWER);
         }
     }

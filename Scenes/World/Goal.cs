@@ -31,6 +31,7 @@ public partial class Goal : Node2D
 
 	private void OnBallEnterScoringArea(Node2D body)
     {
+		SoundManager.Instance.Play(SoundManager.Sound.WHISTLE);
 		SignalManager.EmitOnTeamScored(_country);
     }
 

@@ -9,6 +9,7 @@ public partial class PlayerStatePassing : PlayerState
     {
         _animationPlayer.Play("kick");
         _player.Velocity = Vector2.Zero;
+        SoundManager.Instance.Play(SoundManager.Sound.PASS);
     }
 
     public override void OnAnimationCompelete()

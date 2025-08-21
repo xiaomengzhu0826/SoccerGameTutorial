@@ -21,6 +21,11 @@ public static class Extensions
                                   p._Role != Player.Role.GOALIE);
     }
 
+    public static int FilterWithTeammatesCount(this Godot.Collections.Array<Node2D> players,string country)
+    {
+        return players.OfType<Player>().Count(p => p._Country == country);
+    }
+
     public static void SortByDistanceTo(this List<Player> players, Vector2 targetPosition)
     {
         players.Sort((a, b) =>

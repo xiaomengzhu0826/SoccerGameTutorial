@@ -34,6 +34,7 @@ public partial class PlayerStateHeader : PlayerState
         Ball contactBall = (Ball)body;
         if (contactBall.CanAirConnect(BALL_HEIGHT_MIN,BALL_HEIGHT_MAX))
         {
+            SoundManager.Instance.Play(SoundManager.Sound.POWERSHOT);
             contactBall.Shoot(_player.Velocity.Normalized() * _player._Power * BOUNS_POWER);
         }
     }

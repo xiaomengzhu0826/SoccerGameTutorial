@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Ball : AnimatableBody2D
 {
@@ -13,6 +14,7 @@ public partial class Ball : AnimatableBody2D
 	private AnimationPlayer _animationPlayer;
 	private RayCast2D _scoringRayCast;
 	private GpuParticles2D _shotParticles;
+	private Area2D _playerProximityArea;
 
 	public static readonly float BOUNCINESS = 0.8f;
 	public static readonly float DISTANCE_HIGH_PASS = 130.0f;
@@ -44,6 +46,7 @@ public partial class Ball : AnimatableBody2D
 		_ballSprite = GetNode<Sprite2D>("BallSprite");
 		_scoringRayCast = GetNode<RayCast2D>("ScoringRayCast");
 		_shotParticles = GetNode<GpuParticles2D>("ShotParticles");
+		_playerProximityArea = GetNode<Area2D>("PlayerProximityArea");
 
 		_spawnPosition = Position;
 		SignalManager.Instance.OnTeamReset += OnTeamReset;
@@ -139,6 +142,12 @@ public partial class Ball : AnimatableBody2D
 		}
 		return _scoringRayCast.GetCollider() == scoringArea;
 	}
+
+	public int GetProximityTeammatesCount(string country)
+	{
+		var players = _playerProximityArea.GetOverlappingBodies() ;
+		return players.FilterWithTeammatesCount(country);
+	} 
 
 	private void OnTeamReset()
 	{

@@ -41,6 +41,7 @@ public partial class GameStateKickOff : GameState
             if (KeyUtils.IsActionJustPressed(controlScheme, KeyUtils.Action.PASS))
             {
                 SignalManager.EmitOnKickoffStarted();
+                SoundManager.Instance.Play(SoundManager.Sound.WHISTLE);
                 TransitionState(GameManager.State.IN_PLAY);
             }
         }

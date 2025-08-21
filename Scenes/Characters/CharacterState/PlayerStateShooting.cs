@@ -23,6 +23,7 @@ public partial class PlayerStateShooting : PlayerState
 
     private void ShootBall()
     {
+        SoundManager.Instance.Play(SoundManager.Sound.SHOT);
         _ball.Shoot(_playerStateData._ShotDirection * _playerStateData._ShotPower);
     }
 

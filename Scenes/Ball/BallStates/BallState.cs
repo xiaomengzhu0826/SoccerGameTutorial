@@ -69,6 +69,7 @@ public partial class BallState : Node
         if (collision != null)
         {
             _ball._velocity = _ball._velocity.Bounce(collision.GetNormal()) * Ball.BOUNCINESS;
+            SoundManager.Instance.Play(SoundManager.Sound.BOUNCE);
             _ball.SwitchState(Ball.State.FREEFORM,(BallStateData)null);
         }
     }
