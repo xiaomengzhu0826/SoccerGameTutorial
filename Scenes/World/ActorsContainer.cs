@@ -27,12 +27,12 @@ public partial class ActorsContainer : Node2D
 		_spawns = GetNode<Node2D>("Spawns");
 		_kickOffs = GetNode<Node2D>("KickOffs");
 
-		_squadHome = SpawnPlayer(GameManager.Instance._Countries[0], _goalHome);
+		_squadHome = SpawnPlayer(DataLoader.Instance._Countries[0], _goalHome);
 		_spawns.Scale = new Vector2(-1, 1);
-		_squadAway = SpawnPlayer(GameManager.Instance._Countries[1], _goalAway);
+		_squadAway = SpawnPlayer(DataLoader.Instance._Countries[1], _goalAway);
 		_kickOffs.Scale = new Vector2(-1, 1);
-		_goalHome.Initialize(GameManager.Instance._Countries[0]);
-		_goalAway.Initialize(GameManager.Instance._Countries[1]);
+		_goalHome.Initialize(DataLoader.Instance._Countries[0]);
+		_goalAway.Initialize(DataLoader.Instance._Countries[1]);
 
 		// foreach (var item in GetChildren())
 		// {

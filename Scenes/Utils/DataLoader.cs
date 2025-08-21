@@ -7,7 +7,9 @@ public partial class DataLoader : Node
 {
     public static DataLoader Instance { get; private set; }
 
-    private List<CountryData> _countries = new();
+    public List<string> _Countries = new() { "FRANCE", "ENGLAND", "ARGENTINA", "BRAZIL", "GERMANY", "ITALY", "SPAIN", "USA" };
+
+    private List<CountryData> _countriesDataList = new();
 
     public override void _Ready()
     {
@@ -19,7 +21,7 @@ public partial class DataLoader : Node
         }
         var jsonText = jsonFile.GetAsText();
         // 反序列化为对象列表
-        _countries = JsonConvert.DeserializeObject<List<CountryData>>(jsonText);
+        _countriesDataList = JsonConvert.DeserializeObject<List<CountryData>>(jsonText);
         // 遍历输出每个国家的球员
         // foreach (var country in countries)
         // {
@@ -34,7 +36,7 @@ public partial class DataLoader : Node
 
     public List<PlayerResource> GetSquad(string country)
     {
-        foreach (var item in _countries)
+        foreach (var item in _countriesDataList)
         {
             if (item.Country == country && item.Players.Count == 6)
             {

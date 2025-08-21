@@ -64,7 +64,7 @@ public partial class Ui : CanvasLayer
 	{
 		for (int i = 0; i < _flagTextures.Length; i++)
 		{
-			_flagTextures[i].Texture = ToolUtils.GetTexture(GameManager.Instance._Countries[i]);
+			_flagTextures[i].Texture = ToolUtils.GetTexture(DataLoader.Instance._Countries[i]);
 		}
 	}
 
@@ -93,7 +93,7 @@ public partial class Ui : CanvasLayer
 		if (!GameManager.Instance.IsTimeUp())
 		{
 			_goalScorerLabel.Text = $"{_lastBallCarrier} SCORED!";
-			_scoreInfoLabel.Text = ToolUtils.GetCurrentScoreInfo(GameManager.Instance._Countries, GameManager.Instance._Score);
+			_scoreInfoLabel.Text = ToolUtils.GetCurrentScoreInfo(DataLoader.Instance._Countries, GameManager.Instance._Score);
 			_animationPlayer.Play("goal_appear");
 		}
 
@@ -111,7 +111,7 @@ public partial class Ui : CanvasLayer
 
 	private void OnGameOver(string countryWinner)
 	{
-		_scoreInfoLabel.Text = ToolUtils.GetFinalScoreInfo(GameManager.Instance._Countries, GameManager.Instance._Score);
+		_scoreInfoLabel.Text = ToolUtils.GetFinalScoreInfo(DataLoader.Instance._Countries, GameManager.Instance._Score);
 		_animationPlayer.Play("game_over");
 	}
 }

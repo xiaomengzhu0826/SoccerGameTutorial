@@ -158,7 +158,7 @@ public partial class Player : CharacterBody2D
 		SignalManager.Instance.OnTeamScored += OnTeamScored;
 		SignalManager.Instance.OnGameOver += OnGameOver;
 
-		var initialPosition = _Country == GameManager.Instance._Countries[0] ? _KickoffPosition : _SpawnPosition;
+		var initialPosition = _Country == DataLoader.Instance._Countries[0] ? _KickoffPosition : _SpawnPosition;
 		SwitchState(State.RESETING, PlayerStateData.Build().SetResetPosition(initialPosition));
 	}
 

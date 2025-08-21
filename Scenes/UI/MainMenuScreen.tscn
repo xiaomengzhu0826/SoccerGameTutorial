@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://cdx2prs3equ0w"]
+[gd_scene load_steps=16 format=3 uid="uid://cdx2prs3equ0w"]
 
 [ext_resource type="Texture2D" uid="uid://br08ua5h8iyod" path="res://Assets/art/ui/mainmenu/menu-background.png" id="1_5osx2"]
+[ext_resource type="Script" uid="uid://bf56aspnce8sb" path="res://Scenes/UI/MainMenuScreen.cs" id="1_tvgo3"]
 [ext_resource type="Texture2D" uid="uid://ctjbdo7x6shpo" path="res://Assets/art/ui/mainmenu/title.png" id="2_ylf0k"]
 [ext_resource type="Texture2D" uid="uid://ddj1wvloapll7" path="res://Assets/art/ui/mainmenu/menu-mask.png" id="3_tvgo3"]
 [ext_resource type="Texture2D" uid="uid://dbjpycf0fyaru" path="res://Assets/art/ui/mainmenu/layout-p1.png" id="4_woqfs"]
@@ -8,6 +9,93 @@
 [ext_resource type="Texture2D" uid="uid://bpuqupt28g3gk" path="res://Assets/art/ui/mainmenu/1-player-selected.png" id="6_jllfa"]
 [ext_resource type="Texture2D" uid="uid://bjvc4cys1lugn" path="res://Assets/art/ui/mainmenu/2-players.png" id="7_t08f0"]
 [ext_resource type="Texture2D" uid="uid://cfpdfreu12poh" path="res://Assets/art/ui/mainmenu/ball-selection.png" id="8_ylf0k"]
+
+[sub_resource type="Animation" id="Animation_woq4g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background/TitleTexture:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(25, 20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background/SinglePlayerTexture:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35, 100)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Background/TwoPlayersTexture:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35, 125)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Background/Mask:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(155, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Background/PlayerTwoControls:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Background/PlayerOneControls:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Background/SelectionTexture:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_woqfs"]
 resource_name = "start"
@@ -97,98 +185,40 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_woq4g"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Background/TitleTexture:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1.2),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(25, 20)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Background/SinglePlayerTexture:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(35, 100)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Background/TwoPlayersTexture:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(35, 125)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Background/Mask:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(155, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Background/PlayerTwoControls:modulate")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Background/PlayerOneControls:modulate")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Background/SelectionTexture:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [{
+"args": [],
+"method": &"OnSetActive"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jllfa"]
 _data = {
 &"RESET": SubResource("Animation_woq4g"),
 &"start": SubResource("Animation_woqfs")
+}
+
+[sub_resource type="Animation" id="Animation_tvgo3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background/SelectionTexture:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_ylf0k"]
@@ -209,21 +239,6 @@ tracks/0/keys = {
 "values": [0.0, 1.5708, 3.14159, 4.71239]
 }
 
-[sub_resource type="Animation" id="Animation_tvgo3"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Background/SelectionTexture:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_woqfs"]
 _data = {
 &"RESET": SubResource("Animation_tvgo3"),
@@ -237,6 +252,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_tvgo3")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 0
@@ -294,6 +310,7 @@ grow_vertical = 0
 texture = ExtResource("5_woq4g")
 
 [node name="SinglePlayerTexture" type="TextureRect" parent="Background"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 35.0
 offset_top = 100.0
@@ -303,6 +320,7 @@ texture = ExtResource("6_jllfa")
 stretch_mode = 2
 
 [node name="TwoPlayersTexture" type="TextureRect" parent="Background"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 35.0
 offset_top = 125.0
@@ -312,6 +330,7 @@ texture = ExtResource("7_t08f0")
 stretch_mode = 2
 
 [node name="SelectionTexture" type="TextureRect" parent="Background"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 10.0
 offset_top = 100.0

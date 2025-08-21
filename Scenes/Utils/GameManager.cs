@@ -10,9 +10,8 @@ public partial class GameManager : Node
     private static readonly int DURATION_IMPACT_PAUSE = 100;
 
     public float _TimeLeft;
-    public List<string> _Countries = new() { "FRANCE", "ENGLAND", "ARGENTINA", "BRAZIL", "GERMANY", "ITALY", "SPAIN", "USA" };
     public int[] _Score = [0, 0];
-    public List<string> _PlayerSetup = new() { "FRANCE", "" };
+    public string[] _PlayerSetup=["FRANCE", ""] ;
 
     private readonly GameStateFactory _gameStateFactory = new();
     private GameState _currentState;
@@ -89,12 +88,12 @@ public partial class GameManager : Node
         {
             return null;
         }
-        return _Score[0] > _Score[1] ? _Countries[0] : _Countries[1];
+        return _Score[0] > _Score[1] ? DataLoader.Instance._Countries[0] :DataLoader.Instance._Countries[1];
     }
 
     public void IncreaseScore(string countryScoreOn)
     {
-        var indexCountryScoring = countryScoreOn == _Countries[0] ? 1 : 0;
+        var indexCountryScoring = countryScoreOn == DataLoader.Instance._Countries[0] ? 1 : 0;
         _Score[indexCountryScoring] += 1;
         SignalManager.EmitOnScoreChanged();
     }

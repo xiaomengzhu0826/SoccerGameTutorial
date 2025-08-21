@@ -15,7 +15,7 @@ public partial class GameStateKickOff : GameState
         }
         else
         {
-            countryStarting = _gameManager._Countries[0];
+            countryStarting = DataLoader.Instance._Countries[0];
         }
 
         if (countryStarting == _gameManager._PlayerSetup[0])
